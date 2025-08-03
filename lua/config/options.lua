@@ -2,12 +2,6 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 
--- Sane defaults for tabs and spaces
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-
 -- Enable / Disable backup files
 vim.opt.swapfile = false
 vim.opt.backup = true
@@ -28,7 +22,7 @@ vim.opt.spell = false
 vim.opt.spelllang = "en_us"
 
 -- Clipboard
-vim.opt.clipboard = "unnamed"
+vim.opt.clipboard = ""
 
 --  Set unknown filetypes
 vim.filetype.add({ extension = { axaml = "xml" } })

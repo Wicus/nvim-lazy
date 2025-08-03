@@ -3,7 +3,7 @@
 -- Add any additional keymaps here
 
 -- Pasting will not replace the current register with what is selected
-vim.keymap.set("x", "p", '"_dP')
+vim.keymap.set("x", "p", '"_dP', { desc = "Paste without copying replaced text" })
 
 -- Copy to system clipboard
 vim.keymap.set("x", "<C-c>", '"+y')
