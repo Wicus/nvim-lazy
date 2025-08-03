@@ -27,3 +27,12 @@ vim.keymap.set("n", "<C-o>", "<C-o>zz")
 -- Tab navigation
 vim.keymap.set("n", "]t", "<cmd>tabnext<cr>", { desc = "Next tab" })
 vim.keymap.set("n", "[t", "<cmd>tabprevious<cr>", { desc = "Previous tab" })
+
+Snacks.toggle
+  .new({
+    id = "diag_virtual_text",
+    name = "Virtual Text",
+    get = function() return vim.diagnostic.config().virtual_text ~= false end,
+    set = function(state) vim.diagnostic.config({ virtual_text = state }) end,
+  })
+  :map("<leader>uv")

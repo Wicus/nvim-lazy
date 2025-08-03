@@ -17,5 +17,9 @@ return {
     keys[#keys + 1] = { "gd", function() Snacks.picker.lsp_definitions() end, desc = "LSP Definitions" }
     keys[#keys + 1] = { "gh", vim.diagnostic.open_float, desc = "Show diagnostics" }
     keys[#keys + 1] = { "<C-s>", vim.lsp.buf.signature_help, desc = "Signature help" }
+
+    -- Code Lens
+    keys[#keys + 1] = { "<leader>cc", function() vim.lsp.codelens.refresh() end, desc = "Refresh CodeLens" }
+    keys[#keys + 1] = { "<leader>cC", function() vim.lsp.codelens.clear() end, desc = "Clear CodeLens" }
   end,
 }
