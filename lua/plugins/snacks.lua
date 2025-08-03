@@ -1,10 +1,10 @@
 return {
   "folke/snacks.nvim",
   init = function()
-    vim.api.nvim_create_autocmd("VimEnter", {
-      group = vim.api.nvim_create_augroup("snacks_explorer_vim_enter", { clear = true }),
-      callback = function() Snacks.picker.explorer() end,
-    })
+    -- vim.api.nvim_create_autocmd("VimEnter", {
+    --   group = vim.api.nvim_create_augroup("snacks_explorer_vim_enter", { clear = true }),
+    --   callback = function() Snacks.picker.explorer() end,
+    -- })
   end,
   opts = {
     styles = {

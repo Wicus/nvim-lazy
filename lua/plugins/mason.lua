@@ -5,6 +5,6 @@ return {
       "github:mason-org/mason-registry",
       "github:crashdummyy/mason-registry",
     },
-    ensure_installed = { "csharpier", "netcoredbg", "roslyn" },
+    ensure_installed = { "csharpier", "netcoredbg", "roslyn", "eslint_d" },
   },
 }
