@@ -24,11 +24,6 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<C-i>", "<C-i>zz")
 vim.keymap.set("n", "<C-o>", "<C-o>zz")
 
--- Execute lua code
-vim.keymap.set("n", "<leader>rf", "<cmd>source %<cr>", { desc = "Reload (Source) file" })
-vim.keymap.set("v", "<leader>r", ":lua<cr>", { desc = "Reload (Execute lua)" })
-vim.keymap.set("n", "<leader>r", "<cmd>.lua<cr>", { desc = "Reload (Execute lua)" })
-
 -- Tab navigation
 vim.keymap.set("n", "]t", "<cmd>tabnext<cr>", { desc = "Next tab" })
 vim.keymap.set("n", "[t", "<cmd>tabprevious<cr>", { desc = "Previous tab" })

@@ -12,8 +12,8 @@ return {
     end,
   },
   keys = {
-    { "<leader>rt", "<cmd>Roslyn target<cr>", desc = "Roslyn Select Target" },
-    { "<leader>rs", "<cmd>Roslyn stop<cr>", desc = "Roslyn Stop" },
-    { "<leader>rr", "<cmd>Roslyn restart<cr>", desc = "Roslyn Restart" },
+    { "<leader>lt", "<cmd>Roslyn target<cr>", desc = "LSP Roslyn (Select Target)" },
+    { "<leader>ls", "<cmd>Roslyn stop<cr>", desc = "LSP Roslyn (Stop)" },
+    { "<leader>lr", "<cmd>Roslyn restart<cr>", desc = "LSP Roslyn (Restart)" },
   },
 }
