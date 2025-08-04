@@ -7,6 +7,8 @@ return {
     -- })
   end,
   opts = {
+    indent = { enabled = false },
+    words = { enabled = false },
     styles = {
       input = {
         relative = "cursor",
@@ -20,14 +22,11 @@ return {
         height = 0.9,
       },
       terminal = {
-        height = 0.2,
+        style = "float",
       },
     },
     terminal = {
       shell = "pwsh", -- shell to use for terminal
-    },
-    indent = {
-      enabled = false
     },
     dashboard = {
       preset = {
@@ -44,7 +43,7 @@ return {
         keys = {
           { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles', { filter = { cwd = true }})" },
           { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-          { icon = "󰈙 ", key = "e", desc = "Explorer", action = ":lua Snacks.dashboard.pick('explorer')" },
+          { icon = "󰈙 ", key = "e", desc = "Explorer", action = ":lua Snacks.dashboard.pick('explorer', { cwd = vim.uv.cwd() })" },
           { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
           { icon = " ", key = "s", desc = "Restore Session", section = "session" },
           { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },

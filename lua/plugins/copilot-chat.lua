@@ -5,8 +5,13 @@ return {
     -- model = 'claude-3.7-sonnet',
     model = "gpt-4.1",
     window = {
-      width = 0.33,
+      layout = "float", -- 'vertical', 'horizontal', 'float'
+      width = 0.6,
+      height = 0.8,
     },
+    -- window = {
+    --   width = 0.33,
+    -- },
   },
   keys = {
     {
