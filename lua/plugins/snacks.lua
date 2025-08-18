@@ -74,6 +74,16 @@ return {
       },
     },
     picker = {
+      win = {
+        -- input window
+        input = {
+          keys = {
+            ["H"] = { "toggle_hidden", mode = { "n" } },
+            ["I"] = { "toggle_ignored", mode = { "n" } },
+          },
+        },
+      },
+
       sources = {
         explorer = {
           layout = { layout = { preview = false, width = 82, zindex = 0 }, cycle = false },
@@ -120,8 +130,8 @@ return {
                 ["R"] = "explorer_update",
                 ["`"] = "cd",
                 ["~"] = "tcd",
-                ["<leader>a"] = "avante_add_files",
                 ["<leader>y"] = "copy_path",
+                -- ["<leader>a"] = "avante_add_files",
               },
             },
           },
@@ -136,7 +146,6 @@ return {
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep visual selection", mode = "x" },
     { "<leader>fr", function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "Find recent files" },
     { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
-    { "<leader>fe", function() Snacks.picker.explorer() end, desc = "Explorer" },
     { "<leader>sl", function() Snacks.picker.resume() end, desc = "Resume" },
     { "<leader>sj", function() Snacks.picker.lsp_symbols() end, desc = "LSP document symbols" },
     { "<leader>sb", function() Snacks.picker.grep_buffers() end, desc = "Search in buffer" },

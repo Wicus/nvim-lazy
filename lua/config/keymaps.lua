@@ -24,9 +24,14 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<C-i>", "<C-i>zz")
 vim.keymap.set("n", "<C-o>", "<C-o>zz")
 
--- Tab navigation
-vim.keymap.set("n", "]t", "<cmd>tabnext<cr>", { desc = "Next tab" })
-vim.keymap.set("n", "[t", "<cmd>tabprevious<cr>", { desc = "Previous tab" })
+vim.keymap.set({ "x", "n" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
+vim.keymap.set({ "x", "n" }, "<leader>dd", function()
+  local file = vim.fn.expand('%:p')
+  local line = vim.fn.line('.')
+  local col  = vim.fn.col('.')
+
+  vim.cmd([[!code --reuse-window --goto ]] .. file .. ':' .. line .. ':' .. col)
+end, { desc = "Debug with VSCode" })
 
 Snacks.toggle
   .new({
