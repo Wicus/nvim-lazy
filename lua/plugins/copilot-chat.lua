@@ -2,11 +2,10 @@ return {
   "CopilotC-Nvim/CopilotChat.nvim",
   opts = {
     auto_insert_mode = false,
-    -- model = 'claude-3.7-sonnet',
-    model = "gpt-4.1",
+    model = "gpt-5",
     window = {
       layout = "float", -- 'vertical', 'horizontal', 'float'
-      width = 0.6,
+      width = 0.5,
       height = 0.8,
     },
     -- window = {

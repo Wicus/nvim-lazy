@@ -41,11 +41,29 @@ return {
         -- stylua: ignore
         ---@type snacks.dashboard.Item[]
         keys = {
-          { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles', { filter = { cwd = true }})" },
-          { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-          { icon = "󰈙 ", key = "e", desc = "Explorer", action = ":lua Snacks.dashboard.pick('explorer', { cwd = vim.uv.cwd() })" },
-          { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
           { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+          { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles', { filter = { cwd = true }})" },
+          {
+            icon = "󰈙 ",
+            key = "e",
+            desc = "Explorer",
+            action = function()
+              vim.cmd([[bdelete!]])
+              Snacks.dashboard.pick('explorer', { cwd = vim.uv.cwd() })
+            end
+          },
+          {
+            icon = "󰈙 ",
+            key = "d",
+            desc = "Vim Dadbod",
+            action = function()
+              vim.cmd([[bdelete!]])
+              vim.cmd([[DBUI]])
+            end
+          },
+
+          { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
+          { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
           { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
           { icon = " ", key = "R", desc = "Old Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
           { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },

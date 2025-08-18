@@ -8,6 +8,7 @@ return {
       python = { "black" },
       typescript = { "prettierd" },
       typescriptreact = { "prettierd" },
+      html = { "prettierd" },
     },
   },
   keys = {
