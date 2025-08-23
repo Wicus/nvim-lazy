@@ -30,7 +30,13 @@ vim.filetype.add({ extension = { axaml = "xml" } })
 -- <EOL> at the end of file will be restored if missing
 vim.opt.fixendofline = false
 
+-- Indentation settings
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+
 -- LazyVim global options
 vim.g.autoformat = false
 vim.g.snacks_animate = false
 vim.g.ai_cmp = false
+

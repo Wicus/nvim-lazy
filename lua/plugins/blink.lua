@@ -11,6 +11,6 @@ return {
         enabled = false,
       },
     },
-    signature = { enabled = true },
+    signature = { enabled = false },
   },
 }

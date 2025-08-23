@@ -9,4 +9,8 @@ return {
       colorscheme = "catppuccin",
     },
   },
+  {
+    "echasnovski/mini.pairs",
+    enabled = false,
+  },
 }

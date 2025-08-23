@@ -30,7 +30,7 @@ vim.keymap.set({ "x", "n" }, "<leader>dd", function()
   local line = vim.fn.line('.')
   local col  = vim.fn.col('.')
 
-  vim.cmd([[!code --reuse-window --goto ]] .. file .. ':' .. line .. ':' .. col)
+  vim.cmd([[!code . --reuse-window --goto ]] .. file .. ':' .. line .. ':' .. col)
 end, { desc = "Debug with VSCode" })
 
 Snacks.toggle

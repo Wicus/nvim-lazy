@@ -5,12 +5,10 @@ return {
     model = "gpt-5",
     window = {
       layout = "float", -- 'vertical', 'horizontal', 'float'
-      width = 0.5,
+      width = 0.65,
       height = 0.8,
+      zindex = 100,
     },
-    -- window = {
-    --   width = 0.33,
-    -- },
   },
   keys = {
     {
@@ -19,11 +17,11 @@ return {
       desc = "Select Model (CopilotChat)",
       mode = { "n", "v" },
     },
-    {
-      "<leader>ax",
-      function() return require("CopilotChat").reset() end,
-      desc = "Clear (CopilotChat)",
-      mode = { "n", "v" },
-    },
   },
+  config = function(_, opts)
+    local mappings = require("CopilotChat.config.mappings")
+    mappings.reset.normal = "<leader>x"
+    mappings.reset.insert = "<C-x>"
+    require("CopilotChat").setup(vim.tbl_deep_extend("force", opts, { mappings = mappings }))
+  end,
 }
