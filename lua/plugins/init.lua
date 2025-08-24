@@ -4,13 +4,19 @@ return {
     enabled = false,
   },
   {
+    "echasnovski/mini.pairs",
+    enabled = false,
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "catppuccin",
     },
   },
   {
-    "echasnovski/mini.pairs",
-    enabled = false,
+    "tpope/vim-surround",
+  },
+  {
+    "tpope/vim-sleuth",
   },
 }
