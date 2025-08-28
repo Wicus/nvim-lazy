@@ -1,8 +1,16 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   keys = {
-    { "<leader>fE", false },
-    { "<leader>E", false },
+    {
+      "<leader>fe",
+      function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end,
+      desc = "Explorer NeoTree (cwd)",
+    },
+    {
+      "<leader>fE",
+      function() require("neo-tree.command").execute({ toggle = true, dir = LazyVim.root() }) end,
+      desc = "Explorer NeoTree (Root Dir)",
+    },
   },
   opts = {
     close_if_last_window = true,
@@ -15,6 +23,10 @@ return {
     window = {
       position = "left",
       width = 81,
+      mappings = {
+        ["/"] = "filter_on_submit",
+        ["f"] = "fuzzy_finder",
+      },
     },
   },
 }

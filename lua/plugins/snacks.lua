@@ -54,15 +54,6 @@ return {
           },
           {
             icon = "󰈙 ",
-            key = "E",
-            desc = "Snacks Explorer",
-            action = function()
-              vim.cmd([[bdelete!]])
-              Snacks.dashboard.pick('explorer', { cwd = vim.uv.cwd() })
-            end
-          },
-          {
-            icon = "󰈙 ",
             key = "d",
             desc = "Vim Dadbod",
             action = function()
@@ -95,6 +86,7 @@ return {
 
       sources = {
         explorer = {
+          enabled = false,
           layout = { layout = { preview = false, width = 82, zindex = 0 }, cycle = false },
           actions = {
             -- Just as an example
@@ -155,8 +147,6 @@ return {
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep visual selection", mode = "x" },
     { "<leader>fr", function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "Find recent files" },
     { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
-    { "<leader>fE", function() Snacks.picker.explorer() end, desc = "Snacks Explorer (CWD)" },
-    { "<leader>E", "<leader>fE", desc = "Snacks explorer (CWD)", remap = true },
     { "<leader>sl", function() Snacks.picker.resume() end, desc = "Resume" },
     { "<leader>sj", function() Snacks.picker.lsp_symbols() end, desc = "LSP document symbols" },
     { "<leader>sb", function() Snacks.picker.grep_buffers() end, desc = "Search in buffer" },
