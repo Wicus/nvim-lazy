@@ -8,6 +8,10 @@ return {
     enabled = false,
   },
   {
+    "MeanderingProgrammer/render-markdown.nvim",
+    enabled = false,
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "catppuccin",

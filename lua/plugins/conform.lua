@@ -3,12 +3,18 @@ return {
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
-      cs = { "csharpier" },
+      cs = { "csharpier", lsp_format = "fallback" },
       json = { "prettierd" },
       python = { "black" },
       typescript = { "prettierd" },
       typescriptreact = { "prettierd" },
       html = { "prettierd" },
+    },
+    formatters = {
+      csharpier = {
+        command = "dotnet-csharpier",
+        args = { "--write-stdout" },
+      },
     },
   },
   keys = {

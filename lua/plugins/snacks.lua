@@ -19,13 +19,22 @@ return {
         zindex = 40,
       },
       lazygit = {
-        height = 0.9,
+        height = 0.99,
+        width = 0.99,
       },
       terminal = {
-        style = "float",
+        style = "split",
       },
     },
     terminal = {
+      integrations = {
+        lazygit = {
+          cmd = function()
+            vim.cmd("tabnew") -- Open a new tab
+            vim.cmd("term lazygit") -- Open lazygit in the new tab's terminal
+          end,
+        },
+      },
       shell = "pwsh", -- shell to use for terminal
     },
     dashboard = {

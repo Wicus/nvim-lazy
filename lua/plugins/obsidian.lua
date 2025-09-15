@@ -27,5 +27,6 @@ return {
     },
     footer = { enabled = false, },
     statusline = { enabled = true },
+    ui = { enable = false }
   },
 }

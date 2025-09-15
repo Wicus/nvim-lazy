@@ -19,6 +19,15 @@ return {
       bind_to_cwd = false,
       follow_current_file = { enabled = true },
       use_libuv_file_watcher = true,
+      commands = {
+        add_to_git = function(state)
+          local node = state.tree:get_node()
+          if node and node.path then
+            vim.cmd("!git add -f " .. vim.fn.shellescape(node.path))
+            vim.cmd("redraw!") -- Refresh Neo-tree to reflect changes
+          end
+        end,
+      },
     },
     window = {
       position = "left",
@@ -26,6 +35,7 @@ return {
       mappings = {
         ["/"] = "filter_on_submit",
         ["f"] = "fuzzy_finder",
+        ["A"] = "add_to_git",
       },
     },
   },
