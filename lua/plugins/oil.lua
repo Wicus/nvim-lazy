@@ -1,7 +1,7 @@
 return {
   "stevearc/oil.nvim",
   dependencies = {
-    "echasnovski/mini.icons",
+    "nvim-mini/mini.icons",
   },
   keys = {
     { "-", function() require("oil.actions").parent.callback() end, desc = "Oil" },

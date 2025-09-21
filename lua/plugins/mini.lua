@@ -1,14 +1,14 @@
 return {
   {
-    "echasnovski/mini.cursorword",
+    "nvim-mini/mini.cursorword",
     opts = {},
   },
   {
-    "echasnovski/mini.align",
+    "nvim-mini/mini.align",
     opts = {},
   },
   {
-    "echasnovski/mini.trailspace",
+    "nvim-mini/mini.trailspace",
     keys = {
       {
         "<leader>xw",
