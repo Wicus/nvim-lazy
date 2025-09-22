@@ -4,24 +4,32 @@ return {
     auto_insert_mode = false,
     model = "gpt-5",
     window = {
-      layout = "float", -- 'vertical', 'horizontal', 'float'
-      width = 0.65,
-      height = 0.8,
-      zindex = 100,
+      layout = "vertical", -- 'vertical', 'horizontal', 'float'
+      width = 0.40,
     },
   },
-  keys = {
-    {
-      "<leader>am",
-      "<cmd>CopilotChatModels<CR>",
-      desc = "Select Model (CopilotChat)",
-      mode = { "n", "v" },
-    },
-  },
-  config = function(_, opts)
-    local mappings = require("CopilotChat.config.mappings")
-    mappings.reset.normal = "<leader>x"
-    mappings.reset.insert = "<C-x>"
-    require("CopilotChat").setup(vim.tbl_deep_extend("force", opts, { mappings = mappings }))
+  keys = function()
+    return {
+      { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
+      { "<leader>ag", "", desc = "+Github Copilot Chat", mode = { "n", "v" } },
+      {
+        "<C-j>",
+        "<cmd>CopilotChatToggle<CR>",
+        desc = "Toggle Chat (CopilotChat)",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>agg",
+        "<cmd>CopilotChatToggle<CR>",
+        desc = "Toggle Chat (CopilotChat)",
+        mode = { "n", "v" },
+      },
+      {
+        "<leader>agm",
+        "<cmd>CopilotChatModels<CR>",
+        desc = "Select Model (CopilotChat)",
+        mode = { "n", "v" },
+      },
+    }
   end,
 }
