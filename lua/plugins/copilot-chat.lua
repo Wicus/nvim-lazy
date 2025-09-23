@@ -13,12 +13,6 @@ return {
       { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
       { "<leader>ag", "", desc = "+Github Copilot Chat", mode = { "n", "v" } },
       {
-        "<C-j>",
-        "<cmd>CopilotChatToggle<CR>",
-        desc = "Toggle Chat (CopilotChat)",
-        mode = { "n", "v" },
-      },
-      {
         "<leader>agg",
         "<cmd>CopilotChatToggle<CR>",
         desc = "Toggle Chat (CopilotChat)",

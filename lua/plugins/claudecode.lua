@@ -5,8 +5,7 @@ return {
   keys = {
     { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
     { "<leader>ac", "", desc = "+Claude Code", mode = { "n", "v" } },
-    { "<C-a>", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude Code", mode = { "n", "x" } },
-    { "<leader>acf", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+    { "<M-w>", "<cmd>ClaudeCodeFocus<cr>", desc = "Toggle Claude Code", mode = { "n", "x" } }, -- M-w is mapped to C-. in WHK
     { "<leader>acr", "<cmd>ClaudeCode --resume<cr>", desc = "Resume Claude" },
     { "<leader>acC", "<cmd>ClaudeCode --continue<cr>", desc = "Continue Claude" },
     { "<leader>acm", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Claude model" },
@@ -14,7 +13,7 @@ return {
     { "<leader>acs", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
     {
       "<leader>acs",
-      "<cmd>ClaudeCodeTreeAdd<cr>",
+      "<cmd>ClaudeCodeTreeAdd<r>",
       desc = "Add file",
       ft = { "NvimTree", "neo-tree", "oil", "minifiles" },
     },
@@ -28,9 +27,9 @@ return {
       split_width_percentage = 0.40,
       snacks_win_opts = {
         keys = {
-          claude_hide = { "<C-a>", function(self) self:hide() end, mode = "t", desc = "Hide"}
-      }
-    }
+          claude_hide = { "<M-w>", function(self) self:hide() end, mode = "t", desc = "Hide" },
+        },
+      },
     },
   },
 }
