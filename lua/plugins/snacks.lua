@@ -176,6 +176,6 @@ return {
       desc = "New scratch file",
     },
     -- keep this at the bottom, styling issues
-    { "<M-e>", function() Snacks.terminal.toggle() end, desc = "Toggle terminal", mode = { "n", "t" } },
+    { "<M-e>", function() Snacks.terminal.toggle() end, desc = "Toggle terminal", mode = { "n", "t" } }, -- M-e is mapped to C-/ in WHK
   },
 }

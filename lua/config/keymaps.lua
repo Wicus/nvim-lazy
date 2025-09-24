@@ -24,17 +24,20 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<C-i>", "<C-i>zz")
 vim.keymap.set("n", "<C-o>", "<C-o>zz")
 vim.keymap.set({ "x", "n" }, "<leader>y", '"+y', { desc = "Yank to system clipboard" })
-vim.keymap.set({ "x", "n" }, "<leader>dd", function()
-  vim.cmd("!rider " .. vim.fn.expand('%:p'))
-end, { desc = "Open Rider Debugger" })
+vim.keymap.set(
+  { "x", "n" },
+  "<leader>dd",
+  function() vim.cmd("!rider " .. vim.fn.expand("%:p")) end,
+  { desc = "Open Rider Debugger" }
+)
 vim.keymap.set({ "x", "n" }, "<leader>dv", function()
-  local file = vim.fn.expand('%:p')
-  local line = vim.fn.line('.')
-  local col  = vim.fn.col('.')
-  vim.cmd([[!code . --reuse-window --goto ]] .. file .. ':' .. line .. ':' .. col)
+  local file = vim.fn.expand("%:p")
+  local line = vim.fn.line(".")
+  local col = vim.fn.col(".")
+  vim.cmd([[!code . --reuse-window --goto ]] .. file .. ":" .. line .. ":" .. col)
 end, { desc = "Open VSCode Debugger" })
 
-vim.keymap.set({ "t" }, "<C-k>", "<cmd>close<cr>", { desc = "Close current window" })
+vim.keymap.set("t", "<M-w>", "<cmd>close<cr>", { desc = "Close current window" })
 
 Snacks.toggle
   .new({
