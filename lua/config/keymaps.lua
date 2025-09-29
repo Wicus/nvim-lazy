@@ -37,8 +37,6 @@ vim.keymap.set({ "x", "n" }, "<leader>dv", function()
   vim.cmd([[!code . --reuse-window --goto ]] .. file .. ":" .. line .. ":" .. col)
 end, { desc = "Open VSCode Debugger" })
 
-vim.keymap.set("t", "<M-w>", "<cmd>close<cr>", { desc = "Close current window" })
-
 Snacks.toggle
   .new({
     id = "diag_virtual_text",
