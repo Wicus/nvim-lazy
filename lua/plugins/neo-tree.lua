@@ -1,5 +1,6 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
+  version = "3.35.1",
   keys = {
     {
       "<leader>fe",
