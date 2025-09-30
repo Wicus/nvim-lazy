@@ -12,6 +12,10 @@ return {
     enabled = false,
   },
   {
+    "artempyanykh/marksman",
+    enabled = false,
+  },
+  {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "catppuccin",

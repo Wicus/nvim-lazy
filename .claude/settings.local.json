@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "WebFetch(domain:github.com)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:www.lazyvim.org)",
+      "WebFetch(domain:neovim.io)"
     ],
     "deny": [],
     "ask": []
