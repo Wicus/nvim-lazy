@@ -161,7 +161,7 @@ return {
     { "<leader>sb", function() Snacks.picker.grep_buffers() end, desc = "Search in buffer" },
     { "<leader>bb", function() Snacks.picker.buffers() end, desc = "Buffers" },
     { "<leader>gg", function() Snacks.picker.git_status() end, desc = "Git status" },
-    { "<leader>sm", function() Snacks.picker.notifications() end, desc = "Notifications" },
+    { "<leader>gs", enabled = false },
     { "<leader>gl", function() Snacks.lazygit() end, desc = "Lazygit" },
     { "<leader>.", function() Snacks.scratch() end, desc = "Toggle scratch buffer" },
     { "<leader>ss", function() Snacks.scratch.select() end, desc = "Select scratch buffer" },
