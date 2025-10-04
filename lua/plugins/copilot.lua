@@ -20,11 +20,14 @@ return {
       mode = { "i" },
     },
     {
-      "<C-l>",
+      "<tab>",
       function()
         if require("copilot.suggestion").is_visible() then
           require("copilot.suggestion").accept()
+          return
         end
+
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Tab>", true, false, true), "n", false)
       end,
       mode = { "i" },
     },
