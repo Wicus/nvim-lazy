@@ -8,14 +8,6 @@ return {
     enabled = false,
   },
   {
-    "MeanderingProgrammer/render-markdown.nvim",
-    enabled = false,
-  },
-  {
-    "artempyanykh/marksman",
-    enabled = false,
-  },
-  {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "catppuccin",

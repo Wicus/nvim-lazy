@@ -19,8 +19,8 @@ return {
         zindex = 40,
       },
       lazygit = {
-        height = 0.99,
-        width = 0.99,
+        height = 0.9,
+        width = 0.9,
       },
       terminal = {
         style = "split",
@@ -38,6 +38,7 @@ return {
       shell = "pwsh", -- shell to use for terminal
     },
     dashboard = {
+      enabled = false,
       preset = {
         pick = nil,
         header = [[

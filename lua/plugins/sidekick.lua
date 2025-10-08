@@ -20,29 +20,16 @@ return {
   },
   -- stylua: ignore
   keys = {
-    { "<leader>ap", enabled = false },
     {
       "<leader>aa",
-      function() require("sidekick.cli").prompt() end,
-      mode = { "n", "x" },
+      function() require("sidekick.cli").toggle({ name = "claude" }) end,
       desc = "Sidekick Select Prompt",
-    },
-    {
-      "<leader>ua",
-      function() require("sidekick.cli").toggle() end,
-      desc = "Sidekick Toggle CLI",
     },
     {
       "<M-w>",
       function() require("sidekick.cli").focus() end,
       mode = { "n", "x", "i", "t" },
       desc = "Sidekick Switch Focus",
-    },
-    -- Example of a keybinding to open Claude directly
-    {
-      "<leader>ac",
-      function() require("sidekick.cli").toggle({ name = "claude", focus = true }) end,
-      desc = "Sidekick Claude Toggle",
     },
   },
 }

@@ -40,4 +40,14 @@ return {
       },
     },
   },
+  init = function()
+    vim.api.nvim_create_autocmd("VimEnter", {
+      callback = function()
+        if vim.fn.argc() == 0 then
+          vim.cmd("Neotree focus")
+        end
+      end,
+      desc = "Open Neo-tree on startup",
+    })
+  end,
 }
