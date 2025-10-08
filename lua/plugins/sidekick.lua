@@ -2,6 +2,9 @@ return {
   "folke/sidekick.nvim",
   opts = {
     cli = {
+      tools = {
+        codex = { cmd = { "wsl", "bash", "-ic", "\"codex\"", "--search" }, url = "https://github.com/openai/codex" },
+      },
       ---@class sidekick.win.Opts
       win = {
         ---@type vim.api.keyset.win_config
