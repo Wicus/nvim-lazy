@@ -3,7 +3,7 @@ return {
   opts = {
     cli = {
       tools = {
-        codex = { cmd = { "wsl", "bash", "-ic", "\"codex\"", "--search" }, url = "https://github.com/openai/codex" },
+        codex = { cmd = { "wsl", "bash", "-ic", "codex", "--search" }, url = "https://github.com/openai/codex" },
       },
       ---@class sidekick.win.Opts
       win = {
@@ -14,6 +14,16 @@ return {
         },
         keys = {
           stopinsert = { "<c-o>", "stopinsert", mode = "t" }, -- enter normal mode
+          down = {
+            "<C-n>",
+            function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, false, true), "n", false) end,
+            mode = "t",
+          },
+          up = {
+            "<C-p>",
+            function() vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, false, true), "n", false) end,
+            mode = "t",
+          },
         },
       },
       prompts = {
@@ -25,7 +35,7 @@ return {
   keys = {
     {
       "<leader>aa",
-      function() require("sidekick.cli").toggle({ name = "claude" }) end,
+      function() require("sidekick.cli").toggle({ name = "codex" }) end,
       desc = "Sidekick Select Prompt",
     },
     {

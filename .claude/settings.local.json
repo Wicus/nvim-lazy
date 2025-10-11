@@ -4,7 +4,10 @@
       "WebFetch(domain:github.com)",
       "WebSearch",
       "WebFetch(domain:www.lazyvim.org)",
-      "WebFetch(domain:neovim.io)"
+      "WebFetch(domain:neovim.io)",
+      "Bash(stylua:*)",
+      "Read(//c/Users/WicusPretorius/AppData/Local/nvim-lazy-data/lazy/sidekick.nvim/**)",
+      "Bash(wsl bash -c:*)"
     ],
     "deny": [],
     "ask": []
