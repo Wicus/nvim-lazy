@@ -1,6 +1,9 @@
 return {
   "neovim/nvim-lspconfig",
-  opts = function()
+  opts = function(_, opts)
+    opts.inlay_hints = opts.inlay_hints or {}
+    opts.inlay_hints.enabled = false
+
     -- "grn" is mapped in Normal mode to |vim.lsp.buf.rename()|
     -- "gra" is mapped in Normal and Visual mode to |vim.lsp.buf.code_action()|
     -- "grr" is mapped in Normal mode to |vim.lsp.buf.references()|

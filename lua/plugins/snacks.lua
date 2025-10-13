@@ -27,6 +27,11 @@ return {
       },
     },
     terminal = {
+      win = {
+        keys = {
+          nav_l = false,
+        },
+      },
       integrations = {
         lazygit = {
           cmd = function()
