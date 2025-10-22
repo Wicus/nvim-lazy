@@ -15,7 +15,7 @@ vim.opt.smartcase = true
 vim.opt.updatetime = 50
 
 -- Color column
-vim.opt.colorcolumn = "160"
+vim.opt.colorcolumn = "140"
 
 -- Spelling
 vim.opt.spell = false

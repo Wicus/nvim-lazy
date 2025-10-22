@@ -9,8 +9,7 @@ return {
       win = {
         ---@type vim.api.keyset.win_config
         split = {
-          width = 80,
-          height = 20,
+          width = 114,
         },
         keys = {
           stopinsert = { "<c-o>", "stopinsert", mode = "t" }, -- enter normal mode
@@ -36,7 +35,17 @@ return {
     {
       "<leader>aa",
       function() require("sidekick.cli").toggle({ name = "codex" }) end,
-      desc = "Sidekick Select Prompt",
+      desc = "Sidekick Codex Toggle",
+    },
+    {
+      "<leader>ac",
+      function() require("sidekick.cli").toggle({ name = "claude" }) end,
+      desc = "Sidekick Claude Toggle",
+    },
+    {
+      "<leader>ab",
+      function() require("sidekick.cli").send({ msg = "{file}" }) end,
+      desc = "Sidekick Send Buffer",
     },
     {
       "<M-w>",

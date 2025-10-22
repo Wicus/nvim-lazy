@@ -25,6 +25,14 @@ return {
       terminal = {
         style = "split",
       },
+      zen = {
+        width = 160,
+      },
+    },
+    zen = {
+      toggles = {
+        dim = false,
+      },
     },
     terminal = {
       win = {
