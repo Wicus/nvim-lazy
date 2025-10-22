@@ -3,6 +3,7 @@ return {
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = false,
   ft = "markdown",
+  enabled = vim.fn.has("win32") == 1,
   keys = {
     { "<leader>oo", "<cmd>Obsidian<cr>", desc = "Open Obsidian" },
     { "<leader>on", "<cmd>ObsidianNew<cr>", desc = "New Obsidian Note" },

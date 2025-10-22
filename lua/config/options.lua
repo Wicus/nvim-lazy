@@ -21,9 +21,6 @@ vim.opt.colorcolumn = "140"
 vim.opt.spell = false
 vim.opt.spelllang = "en_us"
 
--- Clipboard
-vim.opt.clipboard = ""
-
 --  Set unknown filetypes
 vim.filetype.add({ extension = { axaml = "xml" } })
 
@@ -39,4 +36,3 @@ vim.opt.shiftwidth = 4
 vim.g.autoformat = false
 vim.g.snacks_animate = false
 vim.g.ai_cmp = false
-

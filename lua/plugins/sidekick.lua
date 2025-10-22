@@ -1,10 +1,7 @@
-return {
+local config = {
   "folke/sidekick.nvim",
   opts = {
     cli = {
-      tools = {
-        codex = { cmd = { "wsl", "bash", "-ic", "codex", "--search" }, url = "https://github.com/openai/codex" },
-      },
       ---@class sidekick.win.Opts
       win = {
         ---@type vim.api.keyset.win_config
@@ -55,3 +52,10 @@ return {
     },
   },
 }
+
+local is_windows = vim.fn.has("win32") == 1
+if is_windows then
+  config.opts.cli.tools.codex = { cmd = { "wsl", "bash", "-ic", "codex", "--search" }, url = "https://github.com/openai/codex" }
+end
+
+return config

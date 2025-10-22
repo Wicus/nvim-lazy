@@ -1,4 +1,4 @@
-return {
+local config = {
   "folke/snacks.nvim",
   init = function()
     -- vim.api.nvim_create_autocmd("VimEnter", {
@@ -48,7 +48,6 @@ return {
           end,
         },
       },
-      shell = "pwsh", -- shell to use for terminal
     },
     dashboard = {
       enabled = false,
@@ -193,3 +192,10 @@ return {
     { "<M-e>", function() Snacks.terminal.toggle() end, desc = "Toggle terminal", mode = { "n", "t" } }, -- M-e is mapped to C-/ in WHK
   },
 }
+
+local is_windows = vim.fn.has("win32") == 1
+if is_windows then
+  config.opts.terminal.shell = "pwsh"
+end
+
+return config
