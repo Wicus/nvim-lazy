@@ -195,6 +195,7 @@ local config = {
 
 local is_windows = vim.fn.has("win32") == 1
 if is_windows then
+  config.opts.terminal.shell = config.opts.terminal.shell or {}
   config.opts.terminal.shell = "pwsh"
 end
 
