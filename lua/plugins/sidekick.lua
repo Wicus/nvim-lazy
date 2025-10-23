@@ -40,11 +40,6 @@ local config = {
       desc = "Sidekick Claude Toggle",
     },
     {
-      "<leader>ab",
-      function() require("sidekick.cli").send({ msg = "{file}" }) end,
-      desc = "Sidekick Send Buffer",
-    },
-    {
       "<M-w>",
       function() require("sidekick.cli").focus() end,
       mode = { "n", "x", "i", "t" },
