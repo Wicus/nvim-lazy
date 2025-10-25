@@ -1,6 +1,9 @@
 local config = {
   "folke/sidekick.nvim",
   opts = {
+    nes = {
+      enabled = false, -- Set to false to disable Next Edit Suggestions
+    },
     cli = {
       ---@class sidekick.win.Opts
       win = {
