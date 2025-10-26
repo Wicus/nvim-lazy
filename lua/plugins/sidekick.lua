@@ -33,20 +33,10 @@ local config = {
   -- stylua: ignore
   keys = {
     {
-      "<leader>aa",
-      function() require("sidekick.cli").toggle({ name = "codex" }) end,
-      desc = "Sidekick Codex Toggle",
-    },
-    {
-      "<leader>ac",
-      function() require("sidekick.cli").toggle({ name = "claude" }) end,
-      desc = "Sidekick Claude Toggle",
-    },
-    {
       "<M-w>",
-      function() require("sidekick.cli").focus() end,
+      function() require("sidekick.cli").toggle() end,
       mode = { "n", "x", "i", "t" },
-      desc = "Sidekick Switch Focus",
+      desc = "Sidekick Toggle"
     },
   },
 }
