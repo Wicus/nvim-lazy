@@ -9,7 +9,8 @@
       "Read(//c/Users/WicusPretorius/AppData/Local/nvim-lazy-data/lazy/sidekick.nvim/**)",
       "Bash(wsl bash -c:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ],
     "deny": [],
     "ask": []
