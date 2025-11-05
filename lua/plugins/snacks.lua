@@ -24,6 +24,9 @@ local config = {
       },
       terminal = {
         style = "split",
+        wo = {
+          winhighlight = "Normal:SidekickChat",
+        },
       },
       zen = {
         width = 160,

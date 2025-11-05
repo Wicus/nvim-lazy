@@ -5,6 +5,9 @@ local config = {
       enabled = false, -- Set to false to disable Next Edit Suggestions
     },
     cli = {
+      tools = {
+        codex = { cmd = { "codex", "resume" }, url = "https://github.com/openai/codex" }
+      },
       ---@class sidekick.win.Opts
       win = {
         ---@type vim.api.keyset.win_config
@@ -34,8 +37,14 @@ local config = {
   keys = {
     {
       "<M-w>",
-      function() require("sidekick.cli").toggle() end,
+      function() require("sidekick.cli").toggle({ name = "codex" }) end,
       mode = { "n", "x", "i", "t" },
+      desc = "Sidekick Toggle"
+    },
+    {
+      "<leader>aa",
+      function() require("sidekick.cli").toggle({ name = "codex" }) end,
+      mode = { "n", "x", },
       desc = "Sidekick Toggle"
     },
   },
@@ -45,7 +54,7 @@ local is_windows = vim.fn.has("win32") == 1
 if is_windows then
   config.opts.cli.tools = config.opts.cli.tools or {}
   config.opts.cli.tools.codex =
-    { cmd = { "wsl", "bash", "-ic", "codex", "--search" }, url = "https://github.com/openai/codex" }
+    { cmd = { "wsl", "bash", "-ic", "codex", "resume" }, url = "https://github.com/openai/codex" }
 end
 
 return config
