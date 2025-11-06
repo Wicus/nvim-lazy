@@ -54,7 +54,7 @@ local is_windows = vim.fn.has("win32") == 1
 if is_windows then
   config.opts.cli.tools = config.opts.cli.tools or {}
   config.opts.cli.tools.codex =
-    { cmd = { "wsl", "bash", "-ic", "codex", "resume" }, url = "https://github.com/openai/codex" }
+    { cmd = { "wsl", "bash", "-ic", "\"codex resume\"" }, url = "https://github.com/openai/codex" }
 end
 
 return config
