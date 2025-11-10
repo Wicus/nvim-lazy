@@ -6,7 +6,7 @@ local config = {
     },
     cli = {
       tools = {
-        codex = { cmd = { "codex", "resume" }, url = "https://github.com/openai/codex" }
+        codex = { cmd = { "codex", "resume" }, url = "https://github.com/openai/codex" },
       },
       ---@class sidekick.win.Opts
       win = {
@@ -14,6 +14,11 @@ local config = {
         split = {
           width = 114,
         },
+        float = {
+          width = 0.6,
+          height = 0.8,
+        },
+        layout = "float",
         keys = {
           stopinsert = { "<c-o>", "stopinsert", mode = "t" }, -- enter normal mode
           down = {
