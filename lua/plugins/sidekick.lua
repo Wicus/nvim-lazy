@@ -12,13 +12,9 @@ local config = {
       win = {
         ---@type vim.api.keyset.win_config
         split = {
-          width = 114,
+          width = 140,
         },
-        float = {
-          width = 0.6,
-          height = 0.8,
-        },
-        layout = "float",
+        layout = "left",
         keys = {
           stopinsert = { "<c-o>", "stopinsert", mode = "t" }, -- enter normal mode
           down = {
@@ -42,13 +38,19 @@ local config = {
   keys = {
     {
       "<M-w>",
-      function() require("sidekick.cli").toggle({ name = "codex" }) end,
+      function()
+        require("sidekick.cli").toggle()
+        vim.cmd([[Neotree toggle]])
+      end,
       mode = { "n", "x", "i", "t" },
       desc = "Sidekick Toggle"
     },
     {
       "<leader>aa",
-      function() require("sidekick.cli").toggle({ name = "codex" }) end,
+      function()
+        require("sidekick.cli").toggle()
+        vim.cmd([[Neotree toggle]])
+      end,
       mode = { "n", "x", },
       desc = "Sidekick Toggle"
     },
@@ -59,7 +61,7 @@ local is_windows = vim.fn.has("win32") == 1
 if is_windows then
   config.opts.cli.tools = config.opts.cli.tools or {}
   config.opts.cli.tools.codex =
-    { cmd = { "wsl", "bash", "-ic", "\"codex resume\"" }, url = "https://github.com/openai/codex" }
+    { cmd = { "wsl", "bash", "-ic", '"codex resume"' }, url = "https://github.com/openai/codex" }
 end
 
 return config
