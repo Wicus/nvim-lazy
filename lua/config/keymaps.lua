@@ -37,6 +37,8 @@ vim.keymap.set({ "x", "n" }, "<leader>dv", function()
   vim.cmd([[!code . --reuse-window --goto ]] .. file .. ":" .. line .. ":" .. col)
 end, { desc = "Open VSCode Debugger" })
 
+vim.keymap.set({ "i", "t" }, "<C-H>", "<C-W>", { noremap = true, silent = true })
+
 Snacks.toggle
   .new({
     id = "diag_virtual_text",
@@ -45,3 +47,10 @@ Snacks.toggle
     set = function(state) vim.diagnostic.config({ virtual_text = state }) end,
   })
   :map("<leader>uv")
+
+
+Snacks.toggle({
+  name = "Completion",
+  get = function() return vim.b.completion end,
+  set = function(state) vim.b.completion = state end,
+}):map("<leader>uq")

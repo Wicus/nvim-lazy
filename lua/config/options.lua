@@ -36,3 +36,5 @@ vim.opt.shiftwidth = 4
 vim.g.autoformat = false
 vim.g.snacks_animate = false
 vim.g.ai_cmp = false
+
+vim.b.completion = false
