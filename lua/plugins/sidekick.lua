@@ -12,7 +12,7 @@ local config = {
       win = {
         ---@type vim.api.keyset.win_config
         split = {
-          width = 140,
+          width = 120,
         },
         layout = "left",
         keys = {

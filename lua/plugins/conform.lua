@@ -10,12 +10,6 @@ return {
       typescriptreact = { "prettierd" },
       html = { "prettierd" },
     },
-    formatters = {
-      csharpier = {
-        command = "dotnet-csharpier",
-        args = { "--write-stdout" },
-      },
-    },
   },
   keys = {
     {
