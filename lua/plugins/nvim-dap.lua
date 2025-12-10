@@ -14,7 +14,9 @@ M.lazy_specs = {
       M.dap_setup()
       M.csharp_dap_setup()
       M.lua_dap_setup()
-      vim.cmd([[set noshellslash]])
+      if vim.fn.has("win32") == 1 then
+        vim.cmd([[set shellslash]])
+      end
     end,
   },
   {

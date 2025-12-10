@@ -40,7 +40,6 @@ local config = {
       "<M-w>",
       function()
         require("sidekick.cli").toggle()
-        vim.cmd([[Neotree toggle]])
       end,
       mode = { "n", "x", "i", "t" },
       desc = "Sidekick Toggle"
@@ -49,7 +48,6 @@ local config = {
       "<leader>aa",
       function()
         require("sidekick.cli").toggle()
-        vim.cmd([[Neotree toggle]])
       end,
       mode = { "n", "x", },
       desc = "Sidekick Toggle"
