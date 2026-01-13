@@ -5,10 +5,10 @@ M.lazy_specs = {
     "mfussenegger/nvim-dap",
     keys = {
       { "<F5>", function() require("dap").continue() end, desc = "Start/Continue Debugging" },
-      { "<F6>", function() require("osv").launch({ port = 8086 }) end, desc = "Launch lua OSV server" },
       { "<F10>", function() require("dap").step_over() end, desc = "Step Over" },
       { "<F11>", function() require("dap").step_into() end, desc = "Step Into" },
       { "<S-F11>", function() require("dap").step_out() end, desc = "Step Out" },
+      { "<leader>dl", function() require("osv").launch({ port = 8086 }) end, desc = "Launch lua OSV server" },
     },
     config = function()
       M.dap_setup()

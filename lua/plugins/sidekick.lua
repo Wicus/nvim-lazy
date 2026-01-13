@@ -14,7 +14,6 @@ local config = {
         split = {
           width = 120,
         },
-        layout = "left",
         keys = {
           stopinsert = { "<c-o>", "stopinsert", mode = "t" }, -- enter normal mode
           down = {

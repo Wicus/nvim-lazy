@@ -1,9 +1,6 @@
 return {
   "saghen/blink.cmp",
   opts = {
-    enabled = function()
-      return vim.b.completion;
-    end,
     keymap = {
       preset = "enter",
       ["<M-q>"] = { "show", "show_documentation", "hide_documentation" }, -- "M-q" is remapped in AutoHotkey as <C-space>
