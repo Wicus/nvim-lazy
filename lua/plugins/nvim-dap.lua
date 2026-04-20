@@ -103,6 +103,19 @@ M.dap_setup = function()
   end
 end
 
+M.pick_dll = function()
+  local co = coroutine.running()
+  local dlls = vim.fn.globpath(vim.fn.getcwd(), "**/bin/Debug/**/*.dll", false, true)
+  vim.list_extend(dlls, vim.fn.globpath(vim.fn.getcwd(), "**/bin/Release/**/*.dll", false, true))
+  if #dlls == 0 then
+    return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file")
+  end
+  vim.ui.select(dlls, { prompt = "Select DLL:" }, function(choice)
+    coroutine.resume(co, choice or vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file"))
+  end)
+  return coroutine.yield()
+end
+
 M.csharp_dap_setup = function()
   local dap = require("dap")
   if not dap.adapters["netcoredbg"] then
@@ -116,18 +129,16 @@ M.csharp_dap_setup = function()
     }
   end
   for _, lang in ipairs({ "cs", "fsharp", "vb" }) do
-    if not dap.configurations[lang] then
-      dap.configurations[lang] = {
-        {
-          type = "netcoredbg",
-          name = "Launch file",
-          request = "launch",
-          ---@diagnostic disable-next-line: redundant-parameter
-          program = function() return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file") end,
-          cwd = "${workspaceFolder}",
-        },
-      }
-    end
+    dap.configurations[lang] = {
+      {
+        type = "netcoredbg",
+        name = "Launch file",
+        request = "launch",
+        program = M.pick_dll,
+        args = function() return vim.split(vim.fn.input("Args: "), " ", { trimempty = true }) end,
+        cwd = "${workspaceFolder}",
+      },
+    }
   end
 end
 
