@@ -114,20 +114,6 @@ local config = {
           enabled = false,
           layout = { layout = { preview = false, width = 82, zindex = 0 }, cycle = false },
           actions = {
-            -- Just as an example
-            avante_add_files = function(_, item)
-              local relative_path = require("avante.utils").relative_path(item.file)
-              local sidebar = require("avante").get()
-
-              local open = sidebar:is_open()
-              -- ensure avante sidebar is open
-              if not open then
-                require("avante.api").ask()
-                sidebar = require("avante").get()
-              end
-
-              sidebar.file_selector:add_selected_file(relative_path)
-            end,
             copy_path = function(_, item)
               local filename = vim.fn.fnamemodify(item.file, ":t")
               local values =
@@ -167,6 +153,8 @@ local config = {
   },
   keys = {
     -- Picker
+    { "<leader>nf", function() Snacks.picker.files({ cwd = "~/projects/notes" }) end, desc = "Notes: find files" },
+    { "<leader>ng", function() Snacks.picker.grep({ cwd = "~/projects/notes" }) end, desc = "Notes: grep" },
     { "<leader>/", function() Snacks.picker.grep() end, desc = "Live grep" },
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep cword" },
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep visual selection", mode = "x" },
@@ -179,6 +167,8 @@ local config = {
     { "<leader>gg", function() Snacks.picker.git_status() end, desc = "Git status" },
     { "<leader>gs", enabled = false },
     { "<leader>gl", function() Snacks.lazygit() end, desc = "Lazygit" },
+    { "<C-M-l>", function() Snacks.lazygit() end, desc = "Lazygit", mode = { "n", "t" } },
+    { "<C-M-k>", function() Snacks.terminal.toggle("k9s", { win = { style = "lazygit" } }) end, desc = "Toggle k9s", mode = { "n", "t" } },
     { "<leader>.", function() Snacks.scratch() end, desc = "Toggle scratch buffer" },
     { "<leader>ss", function() Snacks.scratch.select() end, desc = "Select scratch buffer" },
     {
