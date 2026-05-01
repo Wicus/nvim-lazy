@@ -14,6 +14,7 @@ M.lazy_specs = {
       M.dap_setup()
       M.csharp_dap_setup()
       M.lua_dap_setup()
+      M.cpp_dap_setup()
     end,
   },
   {
@@ -239,6 +240,27 @@ M.find_solutions = function()
     dir = parent
   end
   return {}, nil
+end
+
+M.cpp_dap_setup = function()
+  local dap = require("dap")
+  dap.adapters.codelldb = {
+    type = "server",
+    port = "${port}",
+    executable = { command = vim.fn.exepath("codelldb"), args = { "--port", "${port}" } },
+  }
+  for _, lang in ipairs({ "c", "cpp" }) do
+    dap.configurations[lang] = {{
+      type    = "codelldb",
+      request = "launch",
+      name    = "Launch",
+      program = function()
+        return vim.fn.input("Executable: ", vim.fn.getcwd() .. "/build/", "file")
+      end,
+      cwd          = "${workspaceFolder}",
+      stopOnEntry  = false,
+    }}
+  end
 end
 
 return M.lazy_specs

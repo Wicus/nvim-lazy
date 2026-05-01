@@ -18,6 +18,8 @@ return {
       -- Disabling roslyn until there is a stable version. Run `:MasonInstall roslyn@5.4.0-2.26175.10` to install the last working version.
       -- "roslyn", 
       "eslint_d",
+      "clang-format",
+      "codelldb",
     },
   },
 }

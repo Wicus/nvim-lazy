@@ -10,6 +10,7 @@ return {
   opts = {
     inlay_hints = { enabled = false },
     servers = {
+      clangd = {},
       ["*"] = {
         keys = {
           { "gr", false },

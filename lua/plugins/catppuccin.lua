@@ -1,6 +1,7 @@
 return {
   {
     "catppuccin/nvim",
+    enabled = true,
     opts = {
       color_overrides = {
         all = {},
