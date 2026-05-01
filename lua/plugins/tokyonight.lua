@@ -15,6 +15,8 @@ return {
         hl.DiagnosticHint = { fg = c.hint }
         hl.DiagnosticOk = { fg = c.teal }
         hl.NoiceCmdlineIcon = {}
+        hl.NeoTreeGitConflict = { fg = c.orange, bold = true }
+        hl.NeoTreeGitUntracked = { fg = c.magenta }
       end,
     },
   },
