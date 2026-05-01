@@ -11,6 +11,14 @@ return {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "tokyonight-night",
+      icons = {
+        diagnostics = {
+          Error = "●",
+          Warn  = "●",
+          Hint  = "●",
+          Info  = "●",
+        },
+      },
     },
   },
   {
