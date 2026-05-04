@@ -58,13 +58,13 @@ return {
   },
   keys = {
     {
-      "<leader>on",
+      "<leader>nn",
       -- empty string triggers next_inbox_id() date-based naming in note_id_func
       function() require("obsidian.actions").new("") end,
       desc = "Quick note",
     },
     {
-      "<leader>oN",
+      "<leader>nN",
       function()
         local title = vim.fn.input("Note title: ")
         if title == "" then return end
@@ -80,6 +80,6 @@ return {
       end,
       desc = "New note",
     },
-    { "<leader>ob", backlinks, desc = "Notes: backlinks" },
+    { "<leader>nb", backlinks, desc = "Notes: backlinks" },
   },
 }
