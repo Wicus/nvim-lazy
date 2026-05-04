@@ -182,7 +182,7 @@ local config = {
       desc = "New scratch file",
     },
     -- keep this at the bottom, styling issues
-    { "<M-t>", function() Snacks.terminal.toggle() end, desc = "Toggle terminal", mode = { "n", "t" } }, -- was M-e, reclaimed by sidekick
+    { "<M-e>", function() Snacks.terminal.toggle() end, desc = "Toggle terminal", mode = { "n", "t" } },
   },
 }
 

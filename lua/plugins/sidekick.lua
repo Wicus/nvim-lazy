@@ -23,7 +23,7 @@ local config = {
     {
       "<M-w>",
       function()
-        require("sidekick.cli").toggle({ name = "claude" })
+        require("sidekick.cli").toggle()
       end,
       mode = { "n", "x", "i", "t" },
       desc = "Sidekick Toggle"
@@ -35,6 +35,22 @@ local config = {
       end,
       mode = { "n", "x", },
       desc = "Sidekick Toggle"
+    },
+    {
+      "<leader>ac",
+      function()
+        require("sidekick.cli").toggle({ name = "claude" })
+      end,
+      mode = { "n", "x", },
+      desc = "Sidekick: claude"
+    },
+    {
+      "<leader>ax",
+      function()
+        require("sidekick.cli").toggle({ name = "codex" })
+      end,
+      mode = { "n", "x", },
+      desc = "Sidekick: codex"
     },
   },
 }

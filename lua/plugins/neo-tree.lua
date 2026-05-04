@@ -65,7 +65,7 @@ return {
               return
             end
 
-            local dest = vim.fn.expand("~/projects/notes/") .. vim.fn.fnamemodify(node.path, ":t")
+            local dest = vim.fn.expand("~/notes/_inbox/") .. vim.fn.fnamemodify(node.path, ":t")
             local ok, err = vim.uv.fs_copyfile(node.path, dest)
             if not ok then
               vim.notify("Failed to copy to " .. dest .. ": " .. (err or "unknown error"), vim.log.levels.ERROR)
