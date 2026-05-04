@@ -153,8 +153,8 @@ local config = {
   },
   keys = {
     -- Picker
-    { "<leader>nf", function() Snacks.picker.files({ cwd = "~/projects/notes" }) end, desc = "Notes: find files" },
-    { "<leader>ng", function() Snacks.picker.grep({ cwd = "~/projects/notes" }) end, desc = "Notes: grep" },
+    { "<leader>of", function() Snacks.picker.files({ cwd = "~/notes", ft = "md" }) end, desc = "Notes: find" },
+    { "<leader>og", function() Snacks.picker.grep({ cwd = "~/notes", glob = "*.md" }) end, desc = "Notes: grep" },
     { "<leader>/", function() Snacks.picker.grep() end, desc = "Live grep" },
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep cword" },
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep visual selection", mode = "x" },

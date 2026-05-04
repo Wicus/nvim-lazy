@@ -6,6 +6,7 @@ return {
     spec = {
       {
         { "<leader>l", group = "lsp", icon = "󰒋" },
+        { "<leader>o", group = "notes", icon = "󰎞" },
         { "gr", group = "lsp", icon = "", },
       },
     },
