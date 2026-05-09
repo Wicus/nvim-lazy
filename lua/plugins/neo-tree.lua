@@ -1,3 +1,7 @@
+local function neotree_width()
+  return math.max(20, math.min(81, math.floor(vim.o.columns * 0.20)))
+end
+
 return {
   "nvim-neo-tree/neo-tree.nvim",
   version = "3.35.1",
@@ -79,7 +83,7 @@ return {
     },
     window = {
       position = "left",
-      width = 81,
+      width = neotree_width(),
       mappings = {
         ["/"] = "filter_on_submit",
         ["f"] = "fuzzy_finder",
@@ -98,6 +102,17 @@ return {
         end
       end,
       desc = "Open Neo-tree on startup",
+    })
+    vim.api.nvim_create_autocmd("VimResized", {
+      callback = function()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+          local buf = vim.api.nvim_win_get_buf(win)
+          if vim.bo[buf].filetype == "neo-tree" then
+            vim.api.nvim_win_set_width(win, neotree_width())
+          end
+        end
+      end,
+      desc = "Resize Neo-tree on terminal resize",
     })
   end,
 }
