@@ -14,7 +14,28 @@ local function slugify(s)
   return s:lower():gsub("%s+", "-"):gsub("[^a-z0-9-]", "")
 end
 
-local folders = { "_inbox", "Projects", "Areas", "Resources", "Archives" }
+local function note_folders()
+  local result = {}
+
+  local function scan(dir, prefix)
+    local entries = {}
+    for name, type in vim.fs.dir(dir) do
+      if type == "directory" and not vim.startswith(name, ".") then
+        table.insert(entries, name)
+      end
+    end
+
+    table.sort(entries)
+    for _, name in ipairs(entries) do
+      local rel = prefix and (prefix .. "/" .. name) or name
+      table.insert(result, rel)
+      scan(dir .. "/" .. name, rel)
+    end
+  end
+
+  scan(vault)
+  return result
+end
 
 local function backlinks()
   local path = vim.api.nvim_buf_get_name(0)
@@ -68,14 +89,13 @@ return {
       function()
         local title = vim.fn.input("Note title: ")
         if title == "" then return end
-        vim.ui.select(folders, { prompt = "Folder: " }, function(folder)
+        vim.ui.select(note_folders(), { prompt = "Folder: " }, function(folder)
           if not folder then return end
           local path = vault .. "/" .. folder .. "/" .. slugify(title) .. ".md"
-          vim.cmd.edit(vim.fn.fnameescape(path))
           if vim.fn.filereadable(path) == 0 then
-            vim.api.nvim_buf_set_lines(0, 0, -1, false, { "# " .. title, "" })
-            vim.cmd("write")
+            vim.fn.writefile({ "# " .. title, "" }, path)
           end
+          vim.cmd.edit(vim.fn.fnameescape(path))
         end)
       end,
       desc = "New note",
