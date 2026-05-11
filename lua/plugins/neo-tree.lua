@@ -1,5 +1,5 @@
 local function neotree_width()
-  return math.max(20, math.min(81, math.floor(vim.o.columns * 0.20)))
+  return math.max(20, math.min(81, math.floor(vim.o.columns * 0.25)))
 end
 
 return {

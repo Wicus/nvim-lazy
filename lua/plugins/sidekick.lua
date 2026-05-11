@@ -6,7 +6,7 @@ local function prompt_path()
 end
 
 local function sidekick_width()
-  return math.max(45, math.min(120, math.floor(vim.o.columns * 0.45)))
+  return math.max(45, math.min(140, math.floor(vim.o.columns * 0.45)))
 end
 
 local function prompt_height()
