@@ -5,31 +5,33 @@ local function prompt_path()
   return PROMPT_DIR .. "/" .. safe .. ".md"
 end
 
-local function sidekick_width()
-  return math.max(45, math.min(140, math.floor(vim.o.columns * 0.45)))
-end
+local function sidekick_width() return math.max(45, math.min(140, math.floor(vim.o.columns * 0.45))) end
 
-local function prompt_height()
-  return math.max(10, math.floor(vim.o.lines * 0.30))
-end
+local function prompt_height() return math.max(10, math.floor(vim.o.lines * 0.30)) end
 
 local function find_prompt_buf()
   local path = prompt_path()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.fs.normalize(vim.api.nvim_buf_get_name(buf)) == path then return buf end
+    if vim.fs.normalize(vim.api.nvim_buf_get_name(buf)) == path then
+      return buf
+    end
   end
 end
 
 local function find_prompt_win()
   local buf = find_prompt_buf()
-  if not buf then return end
+  if not buf then
+    return
+  end
   local wins = vim.fn.win_findbuf(buf)
   return wins[1]
 end
 
 local function get_or_create_prompt_buf()
   local buf = find_prompt_buf()
-  if buf then return buf end
+  if buf then
+    return buf
+  end
   local path = prompt_path()
   vim.fn.mkdir(vim.fs.dirname(path), "p")
   if vim.fn.filereadable(path) == 0 then
@@ -100,7 +102,9 @@ local function append_to_prompt(lines)
   end
   vim.api.nvim_buf_set_lines(buf, -1, -1, false, lines)
   vim.api.nvim_buf_set_lines(buf, -1, -1, false, { "" })
-  if not find_prompt_win() then open_prompt() end
+  if not find_prompt_win() then
+    open_prompt()
+  end
   for _, win in ipairs(vim.fn.win_findbuf(buf)) do
     vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(buf), 0 })
   end
@@ -111,7 +115,9 @@ local function add_selection()
   local s, e = vim.fn.getpos("v"), vim.fn.getpos(".")
   local sel = vim.fn.getregion(s, e, { type = mode })
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
-  if not sel or #sel == 0 then return end
+  if not sel or #sel == 0 then
+    return
+  end
   local file = vim.fn.expand("%:.")
   local s_line, e_line = math.min(s[2], e[2]), math.max(s[2], e[2])
   local ft = vim.bo.filetype
@@ -123,7 +129,9 @@ end
 
 local function add_file_ref()
   local file = vim.fn.expand("%:.")
-  if file == "" then return end
+  if file == "" then
+    return
+  end
   append_to_prompt({ "@" .. file })
 end
 
@@ -144,7 +152,7 @@ local config = {
           prompt = false,
           passthrough_c_o = { "<c-o>", function(term) vim.api.nvim_chan_send(term.job, "\15") end, mode = "t" },
         },
-      }
+      },
     },
   },
   init = function()
@@ -197,6 +205,13 @@ local config = {
       mode = { "n", "x", },
       desc = "Sidekick: codex"
     },
+    { "<leader>ap",
+      function()
+        require("sidekick.cli").toggle({ name = "pi" })
+      end,
+      mode = { "n", "x" },
+      desc = "Sidekick: pi"
+    },
     { "<leader>ai", toggle_prompt, mode = { "n" },        desc = "Sidekick: prompt buffer" },
     { "<leader>av", add_selection, mode = "x",            desc = "Sidekick: add selection" },
     { "<leader>aF", add_file_ref,  mode = "n",            desc = "Sidekick: add file ref"  },
@@ -206,8 +221,7 @@ local config = {
 local is_windows = vim.fn.has("win32") == 1
 if is_windows then
   config.opts.cli.tools = config.opts.cli.tools or {}
-  config.opts.cli.tools.codex =
-    { cmd = { "wsl", "bash", "-ic", "codex" }, url = "https://github.com/openai/codex" }
+  config.opts.cli.tools.codex = { cmd = { "wsl", "bash", "-ic", "codex" }, url = "https://github.com/openai/codex" }
 end
 
 return config
