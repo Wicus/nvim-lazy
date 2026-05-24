@@ -11,6 +11,11 @@ return {
     opts.options = opts.options or {}
     opts.options.left = { size = neotree_width() }
 
+    -- Drop Normal:EdgyNormal — it remaps Normal in focused edgy windows,
+    -- making neo-tree look dark when focused while NormalNC keeps base on blur.
+    opts.wo = opts.wo or {}
+    opts.wo.winhighlight = "WinBar:EdgyWinBar,WinBarNC:EdgyWinBarNC"
+
     opts.animate = opts.animate or {}
     opts.animate.enabled = false
 
