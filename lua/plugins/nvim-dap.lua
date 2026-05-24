@@ -8,13 +8,17 @@ M.lazy_specs = {
       { "<F10>",   function() require("dap").step_over() end,               desc = "Step Over" },
       { "<F11>",   function() require("dap").step_into() end,               desc = "Step Into" },
       { "<S-F11>", function() require("dap").step_out() end,                desc = "Step Out" },
+      { "<F23>",   function() require("dap").step_out() end,                desc = "Step Out (S-F11 fallback)" },
+      { "<leader>dO", function() require("dap").step_out() end,             desc = "Step Out" },
       { "<leader>dl", function() require("osv").launch({ port = 8086 }) end, desc = "Launch lua OSV server" },
+      { "<leader>dt", function() M.debug_dotnet_test() end, desc = "Debug .NET test under cursor", ft = "cs" },
     },
     config = function()
       M.dap_setup()
       M.csharp_dap_setup()
       M.lua_dap_setup()
       M.cpp_dap_setup()
+      M.rust_dap_setup()
     end,
   },
   {
@@ -182,6 +186,86 @@ M.pick_dll = function()
   return coroutine.yield()
 end
 
+M.debug_dotnet_test = function()
+  local dap = require("dap")
+
+  -- Find nearest test method name at or above cursor.
+  local row = vim.fn.line(".")
+  local test_name
+  for i = row, 1, -1 do
+    local line = vim.fn.getline(i)
+    local name = line:match("public%s+async%s+Task%s+([%w_]+)%s*%(")
+      or line:match("public%s+Task%s+([%w_]+)%s*%(")
+      or line:match("public%s+void%s+([%w_]+)%s*%(")
+    if name then
+      test_name = name
+      break
+    end
+  end
+  if not test_name then
+    test_name = vim.fn.input("Test name (FullyQualifiedName~...): ")
+    if test_name == "" then return end
+  end
+
+  -- Walk up from current file to find owning .csproj.
+  local dir = vim.fn.expand("%:p:h")
+  local csproj
+  while dir and dir ~= "/" do
+    local found = vim.fn.glob(dir .. "/*.csproj", false, true)
+    if #found > 0 then csproj = found[1]; break end
+    local parent = vim.fn.fnamemodify(dir, ":h")
+    if parent == dir then break end
+    dir = parent
+  end
+  if not csproj then
+    vim.notify("No .csproj found above current file", vim.log.levels.ERROR)
+    return
+  end
+
+  vim.notify(("Launching test: %s"):format(test_name), vim.log.levels.INFO)
+
+  local attached = false
+  local function try_attach(line)
+    if attached then return end
+    local pid = line:match("Process Id:%s*(%d+)")
+    if pid then
+      attached = true
+      vim.schedule(function()
+        vim.notify(("Attaching to PID %s"):format(pid), vim.log.levels.INFO)
+        dap.run({
+          type = "netcoredbg",
+          request = "attach",
+          name = "Attach to dotnet test (auto)",
+          processId = tonumber(pid),
+        })
+      end)
+    end
+  end
+
+  vim.fn.jobstart({ "dotnet", "test", csproj, "--filter", "FullyQualifiedName~" .. test_name }, {
+    env = { VSTEST_HOST_DEBUG = "1" },
+    stdout_buffered = false,
+    on_stdout = function(_, data)
+      for _, line in ipairs(data or {}) do
+        if line ~= "" then try_attach(line) end
+      end
+    end,
+    on_stderr = function(_, data)
+      for _, line in ipairs(data or {}) do
+        if line ~= "" then
+          vim.schedule(function() vim.notify("[test stderr] " .. line, vim.log.levels.WARN) end)
+        end
+      end
+    end,
+    on_exit = function(_, code)
+      vim.schedule(function()
+        vim.notify(("dotnet test exited with code %d"):format(code),
+          code == 0 and vim.log.levels.INFO or vim.log.levels.WARN)
+      end)
+    end,
+  })
+end
+
 M.csharp_dap_setup = function()
   local dap = require("dap")
   if not dap.adapters["netcoredbg"] then
@@ -201,6 +285,15 @@ M.csharp_dap_setup = function()
         program = M.pick_dll,
         args = function() return vim.split(vim.fn.input("Args: "), " ", { trimempty = true }) end,
         cwd = "${workspaceFolder}",
+      },
+      {
+        type = "netcoredbg",
+        name = "Attach to dotnet test (VSTEST_HOST_DEBUG)",
+        request = "attach",
+        processId = function()
+          local pid = vim.fn.input("Test host PID: ")
+          return tonumber(pid)
+        end,
       },
     }
   end
@@ -261,6 +354,67 @@ M.cpp_dap_setup = function()
       stopOnEntry  = false,
     }}
   end
+end
+
+-- Pick a cargo binary from target/debug/ — assumes you've run `cargo build` first.
+-- For single-step "build then debug" use rustaceanvim's <leader>cd on a runnable instead.
+M.pick_rust_binary = function()
+  local cwd = vim.fn.getcwd()
+  local debug_dir = cwd .. "/target/debug"
+  if vim.fn.isdirectory(debug_dir) == 0 then
+    vim.notify("No target/debug — run `cargo build` first", vim.log.levels.WARN)
+    return vim.fn.input("Executable: ", cwd .. "/", "file")
+  end
+
+  local candidates = {}
+  for _, path in ipairs(vim.fn.readdir(debug_dir)) do
+    local full = debug_dir .. "/" .. path
+    local stat = vim.uv.fs_stat(full)
+    if stat and stat.type == "file" and vim.fn.executable(full) == 1 then
+      table.insert(candidates, full)
+    end
+  end
+
+  if #candidates == 0 then
+    return vim.fn.input("Executable: ", debug_dir .. "/", "file")
+  end
+  if #candidates == 1 then
+    return candidates[1]
+  end
+
+  table.sort(candidates, function(a, b)
+    local sa, sb = vim.uv.fs_stat(a), vim.uv.fs_stat(b)
+    return (sa and sa.mtime.sec or 0) > (sb and sb.mtime.sec or 0)
+  end)
+
+  local co = coroutine.running()
+  local items = vim.tbl_map(function(p) return { text = p, file = p } end, candidates)
+  Snacks.picker.pick({
+    title = "Select Rust binary",
+    items = items,
+    format = "file",
+    confirm = function(picker, item)
+      picker:close()
+      coroutine.resume(co, item and item.file or candidates[1])
+    end,
+  })
+  return coroutine.yield()
+end
+
+M.rust_dap_setup = function()
+  local dap = require("dap")
+  -- Reuse codelldb adapter from cpp_dap_setup.
+  dap.configurations.rust = {{
+    type        = "codelldb",
+    request     = "launch",
+    name        = "Launch cargo binary",
+    program     = M.pick_rust_binary,
+    cwd         = "${workspaceFolder}",
+    stopOnEntry = false,
+    args        = function()
+      return vim.split(vim.fn.input("Args: "), " ", { trimempty = true })
+    end,
+  }}
 end
 
 return M.lazy_specs
