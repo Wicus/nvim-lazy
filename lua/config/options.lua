@@ -19,6 +19,9 @@ vim.opt.ttimeoutlen = 50
 -- Color column
 vim.opt.colorcolumn = "140"
 
+-- Line numbers
+vim.opt.relativenumber = false
+
 -- Spelling
 vim.opt.spell = false
 vim.opt.spelllang = "en_us"
