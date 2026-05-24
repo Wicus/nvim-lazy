@@ -13,6 +13,7 @@
     "lazyvim.plugins.extras.lang.sql",
     "lazyvim.plugins.extras.lang.typescript",
     "lazyvim.plugins.extras.lang.zig",
+    "lazyvim.plugins.extras.ui.edgy",
     "lazyvim.plugins.extras.vscode"
   ],
   "install_version": 8,
