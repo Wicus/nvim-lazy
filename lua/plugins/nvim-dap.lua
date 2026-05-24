@@ -57,9 +57,9 @@ M.lazy_specs = {
   },
 }
 
-M._neotree_was_open = false
+M._left_edge_was_open = false
 
-M.neotree_visible = function()
+M.left_edge_visible = function()
   for _, win in ipairs(vim.api.nvim_list_wins()) do
     if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "neo-tree" then
       return true
@@ -69,19 +69,18 @@ M.neotree_visible = function()
 end
 
 M.dapui_open = function()
-  local dapui = require("dapui")
-  M._neotree_was_open = M.neotree_visible()
-  if M._neotree_was_open then
-    vim.cmd("Neotree close")
+  M._left_edge_was_open = M.left_edge_visible()
+  if M._left_edge_was_open then
+    require("edgy").close("left")
   end
-  dapui.open()
+  require("dapui").open()
 end
 
 M.dapui_close = function()
   require("dapui").close()
-  if M._neotree_was_open then
-    M._neotree_was_open = false
-    vim.cmd("Neotree show")
+  if M._left_edge_was_open then
+    M._left_edge_was_open = false
+    require("edgy").open("left")
   end
 end
 
