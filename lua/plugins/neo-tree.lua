@@ -1,5 +1,12 @@
-local function neotree_width()
-  return math.max(20, math.min(81, math.floor(vim.o.columns * 0.25)))
+local function neotree_width() return math.max(20, math.min(81, math.floor(vim.o.columns * 0.25))) end
+
+local function is_starting_in_directory()
+  if vim.fn.argc() ~= 1 then
+    return false
+  end
+
+  local target = vim.fn.argv(0)
+  return target ~= "" and vim.fn.isdirectory(target) == 1
 end
 
 return {
@@ -104,9 +111,11 @@ return {
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       callback = function()
-        if vim.fn.argc() == 0 then
+        if vim.fn.argc() == 0 or is_starting_in_directory() then
           require("edgy").open("left")
           vim.defer_fn(function()
+            require("neo-tree.command").execute({ source = "filesystem", position = "left", dir = vim.uv.cwd() })
+
             for _, win in ipairs(vim.api.nvim_list_wins()) do
               local buf = vim.api.nvim_win_get_buf(win)
               if vim.bo[buf].filetype == "neo-tree" and vim.b[buf].neo_tree_source == "filesystem" then

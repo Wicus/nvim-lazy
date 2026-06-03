@@ -7,7 +7,7 @@ return {
       {
         { "<leader>l", group = "lsp", icon = "󰒋" },
         { "<leader>n", group = "notes", icon = "󰎞" },
-        { "gr", group = "lsp", icon = "", },
+        { "gr", group = "lsp", icon = "" },
       },
     },
   },

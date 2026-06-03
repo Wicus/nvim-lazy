@@ -40,6 +40,9 @@ local config = {
     terminal = {
       win = {
         keys = {
+          nav_h = false,
+          nav_j = false,
+          nav_k = false,
           nav_l = false,
         },
       },
@@ -110,6 +113,18 @@ local config = {
       },
 
       sources = {
+        notifications = {
+          actions = {
+            yank_msg = function(_, item)
+              vim.fn.setreg("+", item.item.msg)
+              vim.notify("Yanked notification", vim.log.levels.INFO)
+            end,
+          },
+          win = {
+            input = { keys = { ["y"] = { "yank_msg", mode = { "n", "i" } } } },
+            list = { keys = { ["y"] = { "yank_msg", mode = { "n" } } } },
+          },
+        },
         explorer = {
           enabled = false,
           layout = { layout = { preview = false, width = 82, zindex = 0 }, cycle = false },
@@ -158,18 +173,23 @@ local config = {
     { "<leader>ng", function() Snacks.picker.grep({ cwd = "~/notes", glob = "*.md" }) end, desc = "Notes: grep" },
     -- Disable LazyVim's <leader>n notification binding; move to <leader>nh
     { "<leader>n", false },
-    { "<leader>nh", function()
-      if Snacks.config.picker and Snacks.config.picker.enabled then
-        Snacks.picker.notifications()
-      else
-        Snacks.notifier.show_history()
-      end
-    end, desc = "Notification History" },
+    {
+      "<leader>nh",
+      function()
+        if Snacks.config.picker and Snacks.config.picker.enabled then
+          Snacks.picker.notifications()
+        else
+          Snacks.notifier.show_history()
+        end
+      end,
+      desc = "Notification History",
+    },
     { "<leader>/", function() Snacks.picker.grep() end, desc = "Live grep" },
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep cword" },
     { "<leader>*", function() Snacks.picker.grep_word() end, desc = "Grep visual selection", mode = "x" },
     { "<leader>fr", function() Snacks.picker.recent({ filter = { cwd = true } }) end, desc = "Find recent files" },
     { "<leader>ff", function() Snacks.picker.files() end, desc = "Find files" },
+    { "<leader>st", function() Snacks.picker.todo_comments() end, desc = "Todo" },
     { "<leader>sl", function() Snacks.picker.resume() end, desc = "Resume" },
     { "<leader>sj", function() Snacks.picker.lsp_symbols() end, desc = "LSP document symbols" },
     { "<leader>sb", function() Snacks.picker.grep_buffers() end, desc = "Search in buffer" },
@@ -178,7 +198,12 @@ local config = {
     { "<leader>gs", enabled = false },
     { "<leader>gl", function() Snacks.lazygit() end, desc = "Lazygit" },
     { "<C-M-l>", function() Snacks.lazygit() end, desc = "Lazygit", mode = { "n", "t" } },
-    { "<C-M-k>", function() Snacks.terminal.toggle("k9s", { win = { style = "lazygit" } }) end, desc = "Toggle k9s", mode = { "n", "t" } },
+    {
+      "<C-M-k>",
+      function() Snacks.terminal.toggle("k9s", { win = { style = "lazygit" } }) end,
+      desc = "Toggle k9s",
+      mode = { "n", "t" },
+    },
     { "<leader>.", function() Snacks.scratch() end, desc = "Toggle scratch buffer" },
     { "<leader>ss", function() Snacks.scratch.select() end, desc = "Select scratch buffer" },
     {
