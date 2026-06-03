@@ -150,6 +150,7 @@ local config = {
         },
         keys = {
           prompt = false,
+          normal_mode = { "<Esc><Esc>", "stopinsert", mode = "t", desc = "enter normal mode" },
           passthrough_c_o = { "<c-o>", function(term) vim.api.nvim_chan_send(term.job, "\15") end, mode = "t" },
         },
       },

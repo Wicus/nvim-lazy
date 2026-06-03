@@ -9,7 +9,16 @@ return {
   "neovim/nvim-lspconfig",
   opts = {
     inlay_hints = { enabled = false },
+    setup = {
+      -- Keep Harper installed/configured, but don't auto-start it.
+      -- Toggle it manually with <leader>uH.
+      harper_ls = function(_, server_opts)
+        vim.lsp.config("harper_ls", server_opts)
+        return true
+      end,
+    },
     servers = {
+      harper_ls = {},
       clangd = {},
       ["*"] = {
         keys = {

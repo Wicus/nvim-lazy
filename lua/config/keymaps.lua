@@ -39,6 +39,12 @@ end, { desc = "Open VSCode Debugger" })
 
 vim.keymap.set({ "i", "t" }, "<C-H>", "<C-W>", { noremap = true, silent = true })
 
+-- Navigate from terminal mode (covers all terminal types incl. sidekick)
+vim.keymap.set("t", "<C-h>", "<cmd>wincmd h<cr>", { silent = true, desc = "Go to left window" })
+vim.keymap.set("t", "<C-j>", "<cmd>wincmd j<cr>", { silent = true, desc = "Go to lower window" })
+vim.keymap.set("t", "<C-k>", "<cmd>wincmd k<cr>", { silent = true, desc = "Go to upper window" })
+vim.keymap.set("t", "<C-l>", "<cmd>wincmd l<cr>", { silent = true, desc = "Go to right window" })
+
 Snacks.toggle
   .new({
     id = "diag_virtual_text",
@@ -48,6 +54,26 @@ Snacks.toggle
   })
   :map("<leader>uv")
 
+Snacks.toggle
+  .new({
+    id = "harper_ls",
+    name = "Harper LSP",
+    get = function() return vim.lsp.is_enabled("harper_ls") end,
+    set = function(state)
+      if state then
+        require("lazy").load({ plugins = { "nvim-lspconfig" } })
+      end
+      vim.lsp.enable("harper_ls", state)
+      if state and vim.lsp.config.harper_ls then
+        local cfg = vim.deepcopy(vim.lsp.config.harper_ls)
+        cfg.name = "harper_ls"
+        if not cfg.filetypes or vim.tbl_contains(cfg.filetypes, vim.bo.filetype) then
+          vim.lsp.start(cfg, { bufnr = 0, silent = true })
+        end
+      end
+    end,
+  })
+  :map("<leader>uH")
 
 Snacks.toggle({
   name = "Completion",
