@@ -33,7 +33,11 @@ return {
   },
   opts = {
     close_if_last_window = true,
-    sources = { "filesystem", "git_status" },
+    sources = { "filesystem", "git_status", "buffers" },
+    source_selector = {
+      winbar = false,
+      statusline = false,
+    },
     commands = {
       add_to_git = function(state)
         local node = state.tree:get_node()
@@ -112,21 +116,19 @@ return {
       pattern = "VeryLazy",
       callback = function()
         if vim.fn.argc() == 0 or is_starting_in_directory() then
-          require("edgy").open("left")
           vim.defer_fn(function()
-            require("neo-tree.command").execute({ source = "filesystem", position = "left", dir = vim.uv.cwd() })
-
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-              local buf = vim.api.nvim_win_get_buf(win)
-              if vim.bo[buf].filetype == "neo-tree" and vim.b[buf].neo_tree_source == "filesystem" then
-                vim.api.nvim_set_current_win(win)
-                return
-              end
-            end
+            require("neo-tree.command").execute({
+              source = "filesystem",
+              action = "focus",
+              position = "left",
+              dir = vim.uv.cwd(),
+            })
+            require("neo-tree.command").execute({ source = "git_status", action = "close" })
+            require("neo-tree.command").execute({ source = "buffers", action = "close" })
           end, 50)
         end
       end,
-      desc = "Open Neo-tree filesystem + git_status via edgy on startup",
+      desc = "Open Neo-tree filesystem only on startup",
     })
     vim.api.nvim_create_autocmd("VimResized", {
       callback = function()

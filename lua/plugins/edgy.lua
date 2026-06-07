@@ -57,6 +57,28 @@ return {
       if type(view) == "table" and view.ft == "neo-tree" then
         local size = type(view.size) == "table" and view.size or {}
         view.size = vim.tbl_extend("force", { width = neotree_width }, size)
+
+        local source = view.title and view.title:match("^Neo%-Tree%s+(.+)$")
+        if source then
+          source = source:lower():gsub("%s+", "_")
+          view.open = function()
+            -- Keep focus in Neo-tree when expanding a pinned Edgy Neo-tree view
+            -- with vertical window navigation (for example <C-j>/<C-k>).
+            require("neo-tree.command").execute({
+              source = source,
+              action = "focus",
+              position = "left",
+              dir = LazyVim.root(),
+            })
+            vim.defer_fn(function()
+              local ok, manager = pcall(require, "neo-tree.sources.manager")
+              local state = ok and manager.get_state(source)
+              if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
+                pcall(vim.api.nvim_set_current_win, state.winid)
+              end
+            end, 50)
+          end
+        end
       end
       if type(view) == "table" and view.title and view.title:lower():find("git") then
         view.size = vim.tbl_extend("force", view.size or {}, { height = 0.33 })
@@ -70,5 +92,6 @@ return {
       title = "Sidekick: %{w:sidekick_cli.name}",
       filter = function(_buf, win) return vim.w[win].sidekick_cli ~= nil end,
     })
+
   end,
 }

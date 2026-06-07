@@ -1,3 +1,16 @@
+local function git_root()
+  local cwd = vim.fn.getcwd(0)
+  local file = vim.api.nvim_buf_get_name(0)
+  local dir = file ~= "" and vim.fn.fnamemodify(file, ":p:h") or cwd
+  local root = vim.fn.systemlist({ "git", "-C", dir, "rev-parse", "--show-toplevel" })[1]
+
+  if vim.v.shell_error == 0 and root and root ~= "" then
+    return root
+  end
+
+  return cwd
+end
+
 local config = {
   "folke/snacks.nvim",
   init = function()
@@ -194,7 +207,7 @@ local config = {
     { "<leader>sj", function() Snacks.picker.lsp_symbols() end, desc = "LSP document symbols" },
     { "<leader>sb", function() Snacks.picker.grep_buffers() end, desc = "Search in buffer" },
     { "<leader>bb", function() Snacks.picker.buffers() end, desc = "Buffers" },
-    { "<leader>gg", function() Snacks.picker.git_status() end, desc = "Git status" },
+    { "<leader>gg", function() Snacks.picker.git_status({ cwd = git_root() }) end, desc = "Git status" },
     { "<leader>gs", enabled = false },
     { "<leader>gl", function() Snacks.lazygit() end, desc = "Lazygit" },
     { "<C-M-l>", function() Snacks.lazygit() end, desc = "Lazygit", mode = { "n", "t" } },

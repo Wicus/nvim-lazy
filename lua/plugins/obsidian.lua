@@ -76,6 +76,7 @@ return {
     end,
     templates = { enabled = false },
     picker = { name = "snacks" },
+    ui = { enable = false },
   },
   keys = {
     {
