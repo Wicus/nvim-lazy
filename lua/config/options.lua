@@ -22,6 +22,9 @@ vim.opt.colorcolumn = "140"
 -- Line numbers
 vim.opt.relativenumber = false
 
+-- Disable line wrapping by default
+vim.opt.wrap = false
+
 -- Spelling
 vim.opt.spell = false
 vim.opt.spelllang = "en_us"
