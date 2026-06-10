@@ -13,11 +13,15 @@ return {
   "nvim-neo-tree/neo-tree.nvim",
   version = "3.35.1",
   keys = {
-    { "<leader>e", false },
     { "<leader>E", false },
     {
+      "<leader>e",
+      function() require("neo-tree.command").execute({ toggle = true, dir = vim.fn.getcwd() }) end,
+      desc = "Explorer NeoTree (cwd)",
+    },
+    {
       "<leader>fe",
-      function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end,
+      function() require("neo-tree.command").execute({ toggle = true, dir = vim.fn.getcwd() }) end,
       desc = "Explorer NeoTree (cwd)",
     },
     {
@@ -67,34 +71,17 @@ return {
       copy_to_notes = function(state)
         local node = state.tree:get_node()
         if node and node.path then
-          local stat = vim.uv.fs_stat(node.path)
-          if not stat then
-            vim.notify("Cannot stat " .. node.path, vim.log.levels.ERROR)
-            return
-          end
-
-          if stat.type == "directory" then
-            vim.notify("Cannot copy directory to notes", vim.log.levels.WARN)
-            return
-          end
-
-          local dest = vim.fn.expand("~/notes/_inbox/") .. vim.fn.fnamemodify(node.path, ":t")
-          local ok, err = vim.uv.fs_copyfile(node.path, dest)
-          if not ok then
-            vim.notify("Failed to copy to " .. dest .. ": " .. (err or "unknown error"), vim.log.levels.ERROR)
-            return
-          end
-
-          vim.notify("Copied to " .. dest, vim.log.levels.INFO)
+          require("utils.notes").copy_file_to_notes(node.path)
         end
       end,
     },
     filesystem = {
-      bind_to_cwd = false,
+      bind_to_cwd = true,
       follow_current_file = { enabled = true },
       use_libuv_file_watcher = true,
       window = {
         mappings = {
+          ["<bs>"] = "navigate_up",
           ["/"] = "filter_on_submit",
           ["f"] = "fuzzy_finder",
         },
@@ -121,7 +108,7 @@ return {
               source = "filesystem",
               action = "focus",
               position = "left",
-              dir = vim.uv.cwd(),
+              dir = vim.fn.getcwd(),
             })
             require("neo-tree.command").execute({ source = "git_status", action = "close" })
             require("neo-tree.command").execute({ source = "buffers", action = "close" })

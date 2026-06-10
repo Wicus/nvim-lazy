@@ -1,41 +1,5 @@
-local vault = vim.fn.expand("~/notes")
-
-local function next_inbox_id()
-  local date = os.date("%Y-%m-%d")
-  local inbox = vault .. "/_inbox/"
-  local i = 1
-  while vim.uv.fs_stat(inbox .. date .. string.format("-%03d.md", i)) do
-    i = i + 1
-  end
-  return date .. string.format("-%03d", i)
-end
-
-local function slugify(s)
-  return s:lower():gsub("%s+", "-"):gsub("[^a-z0-9-]", "")
-end
-
-local function note_folders()
-  local result = {}
-
-  local function scan(dir, prefix)
-    local entries = {}
-    for name, type in vim.fs.dir(dir) do
-      if type == "directory" and not vim.startswith(name, ".") then
-        table.insert(entries, name)
-      end
-    end
-
-    table.sort(entries)
-    for _, name in ipairs(entries) do
-      local rel = prefix and (prefix .. "/" .. name) or name
-      table.insert(result, rel)
-      scan(dir .. "/" .. name, rel)
-    end
-  end
-
-  scan(vault)
-  return result
-end
+local notes = require("utils.notes")
+local vault = notes.vault
 
 local function backlinks()
   local path = vim.api.nvim_buf_get_name(0)
@@ -67,9 +31,9 @@ return {
     frontmatter = { enabled = false },
     note_id_func = function(title)
       if title and title ~= "" then
-        return slugify(title)
+        return notes.slugify(title)
       end
-      return next_inbox_id()
+      return notes.next_inbox_id()
     end,
     note_path_func = function(spec)
       return spec.dir / (spec.id .. ".md")
@@ -90,9 +54,8 @@ return {
       function()
         local title = vim.fn.input("Note title: ")
         if title == "" then return end
-        vim.ui.select(note_folders(), { prompt = "Folder: " }, function(folder)
-          if not folder then return end
-          local path = vault .. "/" .. folder .. "/" .. slugify(title) .. ".md"
+        notes.select_folder(function(folder)
+          local path = notes.folder_path(folder) .. "/" .. notes.slugify(title) .. ".md"
           if vim.fn.filereadable(path) == 0 then
             vim.fn.writefile({ "# " .. title, "" }, path)
           end
@@ -101,6 +64,7 @@ return {
       end,
       desc = "New note",
     },
+    { "<leader>na", function() notes.copy_current_buffer_to_notes() end, desc = "Add buffer note" },
     { "<leader>nb", backlinks, desc = "Notes: backlinks" },
   },
 }

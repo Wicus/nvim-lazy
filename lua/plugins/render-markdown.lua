@@ -11,6 +11,8 @@ return {
     opts = {
       file_types = { "markdown" },
       latex = { enabled = false },
+      heading = { icons = {} },
+      bullet = { icons = {} },
     },
     keys = {
       {

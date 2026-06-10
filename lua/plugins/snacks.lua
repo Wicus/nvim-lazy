@@ -90,7 +90,7 @@ local config = {
             desc = "Neotree Explorer",
             action = function()
               vim.cmd([[bdelete!]])
-              require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
+              require("neo-tree.command").execute({ toggle = true, dir = vim.fn.getcwd() })
             end
           },
           {
