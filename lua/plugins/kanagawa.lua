@@ -20,6 +20,7 @@ return {
       end
 
       return {
+        Normal = { bg = theme.ui.bg_dim },
         TermNormal = { fg = theme.ui.fg, bg = theme.ui.bg_dim },
         TermNormalNC = { fg = theme.ui.fg_dim, bg = theme.ui.bg_dim },
         -- Splits / separators flush with bg
