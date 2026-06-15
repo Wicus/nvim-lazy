@@ -9,6 +9,27 @@ local function is_starting_in_directory()
   return target ~= "" and vim.fn.isdirectory(target) == 1
 end
 
+-- Source of the open neo-tree window (nil when none is open).
+local function neotree_source()
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].filetype == "neo-tree" then
+      return vim.b[buf].neo_tree_source
+    end
+  end
+  return nil
+end
+
+-- Swap the left panel between the file tree and git status in the same slot.
+local function toggle_git_status()
+  local neotree = require("neo-tree.command")
+  if neotree_source() == "git_status" then
+    neotree.execute({ source = "filesystem", action = "focus", position = "left", dir = vim.fn.getcwd() })
+  else
+    neotree.execute({ source = "git_status", action = "focus", position = "left", dir = LazyVim.root() })
+  end
+end
+
 return {
   "nvim-neo-tree/neo-tree.nvim",
   keys = {
@@ -33,10 +54,11 @@ return {
       function() require("neo-tree.command").execute({ reveal_force_cwd = true }) end,
       desc = "Explorer NeoTree (current file)",
     },
+    { "<leader>ge", toggle_git_status, desc = "Git status (swap left panel)" },
   },
   opts = {
     close_if_last_window = true,
-    sources = { "filesystem", "git_status", "buffers" },
+    sources = { "filesystem", "git_status" },
     source_selector = {
       winbar = false,
       statusline = false,
@@ -109,8 +131,6 @@ return {
               position = "left",
               dir = vim.fn.getcwd(),
             })
-            require("neo-tree.command").execute({ source = "git_status", action = "close" })
-            require("neo-tree.command").execute({ source = "buffers", action = "close" })
           end, 50)
         end
       end,

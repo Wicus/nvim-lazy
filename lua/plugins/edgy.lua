@@ -53,37 +53,43 @@ return {
       opts.keys[key] = function(win) resize(win, spec[1], spec[2]) end
     end
 
+    -- LazyVim's edgy extra pins a separate left view per neo-tree source
+    -- (filesystem, git_status, ...), stacking them oddly. Collapse to ONE left
+    -- view; neo-tree swaps sources inside that single window (see <leader>ge).
+    local left = {}
+    local neotree_added = false
     for _, view in ipairs(opts.left or {}) do
       if type(view) == "table" and view.ft == "neo-tree" then
-        local size = type(view.size) == "table" and view.size or {}
-        view.size = vim.tbl_extend("force", { width = ui.sidebar_width }, size)
-
-        local source = view.title and view.title:match("^Neo%-Tree%s+(.+)$")
-        if source then
-          source = source:lower():gsub("%s+", "_")
-          view.open = function()
-            -- Keep focus in Neo-tree when expanding a pinned Edgy Neo-tree view
-            -- with vertical window navigation (for example <C-j>/<C-k>).
-            require("neo-tree.command").execute({
-              source = source,
-              action = "focus",
-              position = "left",
-              dir = LazyVim.root(),
-            })
-            vim.defer_fn(function()
-              local ok, manager = pcall(require, "neo-tree.sources.manager")
-              local state = ok and manager.get_state(source)
-              if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
-                pcall(vim.api.nvim_set_current_win, state.winid)
-              end
-            end, 50)
-          end
+        if not neotree_added then
+          neotree_added = true
+          left[#left + 1] = {
+            title = "Explorer",
+            ft = "neo-tree",
+            size = { width = ui.sidebar_width },
+            open = function()
+              -- Keep focus in Neo-tree when expanding the Edgy view with vertical
+              -- window navigation (for example <C-j>/<C-k>).
+              require("neo-tree.command").execute({
+                source = "filesystem",
+                action = "focus",
+                position = "left",
+                dir = LazyVim.root(),
+              })
+              vim.defer_fn(function()
+                local ok, manager = pcall(require, "neo-tree.sources.manager")
+                local state = ok and manager.get_state("filesystem")
+                if state and state.winid and vim.api.nvim_win_is_valid(state.winid) then
+                  pcall(vim.api.nvim_set_current_win, state.winid)
+                end
+              end, 50)
+            end,
+          }
         end
-      end
-      if type(view) == "table" and view.title and view.title:lower():find("git") then
-        view.size = vim.tbl_extend("force", view.size or {}, { height = 0.33 })
+      else
+        left[#left + 1] = view
       end
     end
+    opts.left = left
 
     opts.bottom = opts.bottom or {}
     table.insert(opts.bottom, {
