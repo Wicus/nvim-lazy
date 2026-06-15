@@ -1,4 +1,6 @@
-local function sidekick_width() return math.max(45, math.min(140, math.floor(vim.o.columns * 0.45))) end
+local ui = require("utils.ui")
+
+local function sidekick_width() return ui.clamped_width(0.45, 45, 140) end
 
 local config = {
   "folke/sidekick.nvim",
@@ -21,19 +23,7 @@ local config = {
       },
     },
   },
-  init = function()
-    vim.api.nvim_create_autocmd("VimResized", {
-      callback = function()
-        for _, win in ipairs(vim.api.nvim_list_wins()) do
-          local buf = vim.api.nvim_win_get_buf(win)
-          if vim.bo[buf].filetype == "sidekick_terminal" then
-            vim.api.nvim_win_set_width(win, sidekick_width())
-          end
-        end
-      end,
-      desc = "Resize Sidekick on terminal resize",
-    })
-  end,
+  init = function() ui.autoresize_width("sidekick_terminal", sidekick_width) end,
   -- stylua: ignore
   keys = {
     {

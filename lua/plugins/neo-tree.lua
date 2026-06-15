@@ -1,4 +1,4 @@
-local function neotree_width() return math.max(20, math.min(81, math.floor(vim.o.columns * 0.25))) end
+local ui = require("utils.ui")
 
 local function is_starting_in_directory()
   if vim.fn.argc() ~= 1 then
@@ -11,7 +11,6 @@ end
 
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  version = "3.35.1",
   keys = {
     { "<leader>E", false },
     {
@@ -89,7 +88,7 @@ return {
     },
     window = {
       position = "left",
-      width = neotree_width(),
+      width = ui.sidebar_width(),
       mappings = {
         ["A"] = "add_to_git",
         ["N"] = "copy_to_notes",
@@ -117,16 +116,6 @@ return {
       end,
       desc = "Open Neo-tree filesystem only on startup",
     })
-    vim.api.nvim_create_autocmd("VimResized", {
-      callback = function()
-        for _, win in ipairs(vim.api.nvim_list_wins()) do
-          local buf = vim.api.nvim_win_get_buf(win)
-          if vim.bo[buf].filetype == "neo-tree" then
-            vim.api.nvim_win_set_width(win, neotree_width())
-          end
-        end
-      end,
-      desc = "Resize Neo-tree on terminal resize",
-    })
+    ui.autoresize_width("neo-tree", ui.sidebar_width)
   end,
 }

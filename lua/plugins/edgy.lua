@@ -1,4 +1,4 @@
-local function neotree_width() return math.max(20, math.min(81, math.floor(vim.o.columns * 0.25))) end
+local ui = require("utils.ui")
 
 local function resize(win, dim, amount)
   local edgebar = win.view.edgebar
@@ -56,7 +56,7 @@ return {
     for _, view in ipairs(opts.left or {}) do
       if type(view) == "table" and view.ft == "neo-tree" then
         local size = type(view.size) == "table" and view.size or {}
-        view.size = vim.tbl_extend("force", { width = neotree_width }, size)
+        view.size = vim.tbl_extend("force", { width = ui.sidebar_width }, size)
 
         local source = view.title and view.title:match("^Neo%-Tree%s+(.+)$")
         if source then
@@ -92,6 +92,5 @@ return {
       title = "Sidekick: %{w:sidekick_cli.name}",
       filter = function(_buf, win) return vim.w[win].sidekick_cli ~= nil end,
     })
-
   end,
 }

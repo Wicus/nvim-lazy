@@ -51,7 +51,7 @@ M.lazy_specs = {
     config = function(_, opts)
       local dap = require("dap")
       local dapui = require("dapui")
-      opts.layouts[1].size = math.max(20, math.min(81, math.floor(vim.o.columns * 0.25)))
+      opts.layouts[1].size = require("utils.ui").sidebar_width()
       dapui.setup(opts)
       dap.listeners.after.event_initialized["dapui_config"] = M.dapui_open
       dap.listeners.before.event_terminated["dapui_config"] = M.dapui_close
