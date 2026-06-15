@@ -5,14 +5,16 @@
 -- Enable / Disable backup files
 vim.opt.swapfile = false
 vim.opt.backup = true
-vim.opt.backupdir = vim.fn.expand("~/nvim-lazy-backup-folder")
+local backup_dir = vim.fn.stdpath("state") .. "/backup//"
+vim.fn.mkdir(backup_dir:gsub("//$", ""), "p")
+vim.opt.backupdir = backup_dir
 
 -- Case insensitive searching UNLESS /C or capital in search
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
 -- Decrease update time
-vim.opt.updatetime = 50
+vim.opt.updatetime = 200
 vim.opt.timeoutlen = 300 -- LazyVim default; 500 felt slow with leader prefixes
 vim.opt.ttimeoutlen = 50
 
