@@ -8,7 +8,7 @@ return {
   end,
   opts = {
     compile = true,
-    dimInactive = true,
+    dimInactive = false,
     commentStyle = { italic = false },
     keywordStyle = { italic = false },
     colors = { theme = { all = { ui = { bg_gutter = "none" } } } },
@@ -19,8 +19,11 @@ return {
         return { fg = color, bg = c(color):blend(theme.ui.bg, 0.95):to_hex() }
       end
 
+      local c = require("kanagawa.lib.color")
       return {
-        Normal = { bg = theme.ui.bg_dim },
+        Comment = { fg = c(theme.syn.comment):blend(theme.ui.bg, 0.45):to_hex() },
+        NeoTreeNormal = { bg = theme.ui.bg_dim },
+        NeoTreeNormalNC = { bg = theme.ui.bg_dim },
         TermNormal = { fg = theme.ui.fg, bg = theme.ui.bg_dim },
         TermNormalNC = { fg = theme.ui.fg_dim, bg = theme.ui.bg_dim },
         -- Splits / separators flush with bg

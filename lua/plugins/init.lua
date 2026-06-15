@@ -10,7 +10,7 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin-mocha",
+      colorscheme = "kanagawa-wave",
       icons = {
         diagnostics = {
           Error = "●",
