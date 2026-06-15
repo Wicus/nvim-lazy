@@ -5,7 +5,24 @@ return {
   -- Server settings live here (not in autocmds.lua) so they are registered before
   -- the server starts; autocmds.lua loads on VeryLazy, which can be too late.
   init = function()
+    -- roslyn.nvim (main) resolves the `roslyn-language-server` launcher and, when
+    -- missing, falls back to a bare `Microsoft.CodeAnalysis.LanguageServer` not on
+    -- PATH. The pinned 5.4.0 server (see plugins/mason.lua) only ships the raw-dll
+    -- `roslyn` bin, which the slim launcher cmd doesn't drive: it needs --logLevel
+    -- and --extensionLogDirectory. Override cmd to the raw bin with those args;
+    -- when the modern launcher is present, leave the plugin default (cmd = nil).
+    local mason_bin = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin")
+    local cmd = nil
+    if vim.fn.executable(vim.fs.joinpath(mason_bin, "roslyn-language-server")) == 0 then
+      local raw_bin = vim.fs.joinpath(mason_bin, "roslyn")
+      if vim.fn.executable(raw_bin) == 1 then
+        local log_dir = vim.fs.joinpath(vim.fn.stdpath("log"), "roslyn")
+        vim.fn.mkdir(log_dir, "p")
+        cmd = { raw_bin, "--stdio", "--logLevel", "Information", "--extensionLogDirectory", log_dir }
+      end
+    end
     vim.lsp.config("roslyn", {
+      cmd = cmd,
       on_attach = function() vim.lsp.inlay_hint.enable(false) end,
       settings = {
         ["csharp|inlay_hints"] = {
