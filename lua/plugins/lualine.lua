@@ -20,9 +20,10 @@ return {
     "nvim-lualine/lualine.nvim",
     optional = true,
     opts = function(_, opts)
-      opts.sections.lualine_x = vim.tbl_filter(function(component)
-        return not is_sidekick_component(component)
-      end, opts.sections.lualine_x or {})
+      opts.sections.lualine_x = vim.tbl_filter(
+        function(component) return not is_sidekick_component(component) end,
+        opts.sections.lualine_x or {}
+      )
     end,
   },
 }

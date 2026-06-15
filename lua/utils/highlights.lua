@@ -2,10 +2,16 @@ local M = {}
 
 local function fg_of(hl, group, depth)
   depth = depth or 0
-  if depth > 5 then return nil end
+  if depth > 5 then
+    return nil
+  end
   local h = hl[group]
-  if not h then return nil end
-  if h.link then return fg_of(hl, h.link, depth + 1) end
+  if not h then
+    return nil
+  end
+  if h.link then
+    return fg_of(hl, h.link, depth + 1)
+  end
   return h.fg
 end
 

@@ -35,9 +35,7 @@ return {
       end
       return notes.next_inbox_id()
     end,
-    note_path_func = function(spec)
-      return spec.dir / (spec.id .. ".md")
-    end,
+    note_path_func = function(spec) return spec.dir / (spec.id .. ".md") end,
     templates = { enabled = false },
     picker = { name = "snacks" },
     ui = { enable = false },
@@ -53,7 +51,9 @@ return {
       "<leader>nN",
       function()
         local title = vim.fn.input("Note title: ")
-        if title == "" then return end
+        if title == "" then
+          return
+        end
         notes.select_folder(function(folder)
           local path = notes.folder_path(folder) .. "/" .. notes.slugify(title) .. ".md"
           if vim.fn.filereadable(path) == 0 then

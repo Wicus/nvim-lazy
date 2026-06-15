@@ -12,9 +12,7 @@ function M.next_inbox_id()
   return date .. string.format("-%03d", i)
 end
 
-function M.slugify(value)
-  return value:lower():gsub("%s+", "-"):gsub("[^a-z0-9-]", "")
-end
+function M.slugify(value) return value:lower():gsub("%s+", "-"):gsub("[^a-z0-9-]", "") end
 
 function M.note_folders()
   local result = { "." }
