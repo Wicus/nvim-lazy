@@ -1,3 +1,18 @@
+-- Resolve the authoritative git toplevel for the current buffer. Snacks.git
+-- .get_root() walks up for any `.git` entry, so a stray empty `.git` dir (seen
+-- in some monorepos) makes it return a nested non-root; the git_status finder
+-- still emits top-relative paths, so the diff preview cwd mismatches and shows
+-- nothing. `git rev-parse --show-toplevel` respects git's real repo rules.
+local function git_status_root()
+  local name = vim.api.nvim_buf_get_name(0)
+  local dir = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd(0)
+  local root = vim.fn.systemlist({ "git", "-C", dir, "rev-parse", "--show-toplevel" })[1]
+  if vim.v.shell_error == 0 and root and root ~= "" then
+    return root
+  end
+  return Snacks.git.get_root() or vim.fn.getcwd(0)
+end
+
 local config = {
   "folke/snacks.nvim",
   opts = {
@@ -143,7 +158,7 @@ local config = {
     { "<leader>sj", function() Snacks.picker.lsp_symbols() end, desc = "LSP document symbols" },
     { "<leader>sb", function() Snacks.picker.grep_buffers() end, desc = "Search in buffer" },
     { "<leader>bb", function() Snacks.picker.buffers() end, desc = "Buffers" },
-    { "<leader>gg", function() Snacks.picker.git_status({ cwd = Snacks.git.get_root() or vim.fn.getcwd(0) }) end, desc = "Git status" },
+    { "<leader>gg", function() Snacks.picker.git_status({ cwd = git_status_root() }) end, desc = "Git status" },
     { "<leader>gs", enabled = false },
     { "<leader>gl", function() Snacks.lazygit() end, desc = "Lazygit" },
     { "<C-M-l>", function() Snacks.lazygit() end, desc = "Lazygit", mode = { "n", "t" } },
