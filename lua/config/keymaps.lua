@@ -36,23 +36,59 @@ vim.keymap.set({ "x", "n" }, "<leader>ov", function()
   vim.cmd([[!code . --reuse-window --goto ]] .. file .. ":" .. line .. ":" .. col)
 end, { desc = "Open in VSCode" })
 
--- Send context to a pinned tmux pane (e.g. a Claude session in a sibling window)
-local cli_tmux = function() return require("utils.cli_tmux") end
-vim.keymap.set({ "n", "x" }, "<leader>at", function() cli_tmux().send_this() end, { desc = "Send this to tmux" })
-vim.keymap.set("n", "<leader>af", function() cli_tmux().send_file() end, { desc = "Send file to tmux" })
-vim.keymap.set("x", "<leader>av", function() cli_tmux().send_selection() end, { desc = "Send selection to tmux" })
-vim.keymap.set({ "n", "x" }, "<leader>aw", function() cli_tmux().pick() end, { desc = "Pick tmux send target" })
+-- Send context to a pinned mux pane (e.g. a Claude session in a sibling
+-- window). Backend picked by environment: herdr pane or tmux pane.
+local cli_mux = function()
+  return vim.env.HERDR_PANE_ID and require("utils.cli_herdr") or require("utils.cli_tmux")
+end
+vim.keymap.set({ "n", "x" }, "<leader>at", function() cli_mux().send_this() end, { desc = "Send this to mux pane" })
+vim.keymap.set("n", "<leader>af", function() cli_mux().send_file() end, { desc = "Send file to mux pane" })
+vim.keymap.set("x", "<leader>av", function() cli_mux().send_selection() end, { desc = "Send selection to mux pane" })
+vim.keymap.set({ "n", "x" }, "<leader>aw", function() cli_mux().pick() end, { desc = "Pick mux send target" })
 
 -- <C-h> (= <C-H>) deletes word in insert mode; in terminal mode it is window nav below
 vim.keymap.set("i", "<C-H>", "<C-W>", { noremap = true, silent = true })
 
--- Seamless nvim<->tmux pane navigation (christoomey/vim-tmux-navigator).
--- Overrides LazyVim's <C-w>h defaults so edge moves cross into tmux panes.
--- Mapped in n + t so it also works from terminal buffers (incl. sidekick).
-vim.keymap.set({ "n", "t" }, "<C-h>", "<cmd>TmuxNavigateLeft<cr>", { silent = true, desc = "Nav left (nvim/tmux)" })
-vim.keymap.set({ "n", "t" }, "<C-j>", "<cmd>TmuxNavigateDown<cr>", { silent = true, desc = "Nav down (nvim/tmux)" })
-vim.keymap.set({ "n", "t" }, "<C-k>", "<cmd>TmuxNavigateUp<cr>", { silent = true, desc = "Nav up (nvim/tmux)" })
-vim.keymap.set({ "n", "t" }, "<C-l>", "<cmd>TmuxNavigateRight<cr>", { silent = true, desc = "Nav right (nvim/tmux)" })
+-- Seamless nvim<->mux pane navigation. Overrides LazyVim's <C-w>h defaults so
+-- edge moves cross into mux panes. Mapped in n + t so it also works from
+-- terminal buffers (incl. sidekick). Inside herdr, utils/herdr_nav hops to the
+-- neighboring herdr pane at edges; inside tmux, vim-tmux-navigator does.
+if vim.env.HERDR_PANE_ID then
+  -- Pane-derived RPC socket so herdr's vim-nav.sh can call into this nvim
+  -- (herdr intercepts C-hjkl globally and can't forward keys losslessly).
+  -- Only claim it when no live nvim already owns it: transient nvims (git
+  -- commit editor, quick edits, headless) inherit the same HERDR_PANE_ID and
+  -- must not clobber the primary editor's socket — os.remove + rebind here
+  -- would unlink the primary's file and orphan its listener, breaking C-hjkl.
+  local sock = vim.fn.stdpath("run") .. "/herdr-nvim-" .. vim.env.HERDR_PANE_ID:gsub(":", "-") .. ".sock"
+  local ok, chan = pcall(vim.fn.sockconnect, "pipe", sock, { rpc = true })
+  local owned_by_live_nvim = ok and chan ~= 0
+  if owned_by_live_nvim then
+    pcall(vim.fn.chanclose, chan)
+  else
+    os.remove(sock)
+    pcall(vim.fn.serverstart, sock)
+  end
+
+  -- Agents as herdr panes (replaces sidekick.nvim's CLI windows in herdr;
+  -- sidekick's own keys are disabled in plugins/sidekick.lua for this env)
+  local herdr_agent = require("utils.herdr_agent")
+  vim.keymap.set({ "n", "x" }, "<leader>aa", function() herdr_agent.pick() end, { desc = "Agent: pick (herdr)" })
+  vim.keymap.set({ "n", "x" }, "<leader>ac", function() herdr_agent.open("claude") end, { desc = "Agent: claude (herdr)" })
+  vim.keymap.set({ "n", "x" }, "<leader>ax", function() herdr_agent.open("codex") end, { desc = "Agent: codex (herdr)" })
+  vim.keymap.set({ "n", "x" }, "<leader>ap", function() herdr_agent.open("pi") end, { desc = "Agent: pi (herdr)" })
+
+  local herdr_nav = require("utils.herdr_nav")
+  vim.keymap.set({ "n", "t" }, "<C-h>", function() herdr_nav.navigate("left") end, { silent = true, desc = "Nav left (nvim/herdr)" })
+  vim.keymap.set({ "n", "t" }, "<C-j>", function() herdr_nav.navigate("down") end, { silent = true, desc = "Nav down (nvim/herdr)" })
+  vim.keymap.set({ "n", "t" }, "<C-k>", function() herdr_nav.navigate("up") end, { silent = true, desc = "Nav up (nvim/herdr)" })
+  vim.keymap.set({ "n", "t" }, "<C-l>", function() herdr_nav.navigate("right") end, { silent = true, desc = "Nav right (nvim/herdr)" })
+else
+  vim.keymap.set({ "n", "t" }, "<C-h>", "<cmd>TmuxNavigateLeft<cr>", { silent = true, desc = "Nav left (nvim/tmux)" })
+  vim.keymap.set({ "n", "t" }, "<C-j>", "<cmd>TmuxNavigateDown<cr>", { silent = true, desc = "Nav down (nvim/tmux)" })
+  vim.keymap.set({ "n", "t" }, "<C-k>", "<cmd>TmuxNavigateUp<cr>", { silent = true, desc = "Nav up (nvim/tmux)" })
+  vim.keymap.set({ "n", "t" }, "<C-l>", "<cmd>TmuxNavigateRight<cr>", { silent = true, desc = "Nav right (nvim/tmux)" })
+end
 
 Snacks.toggle
   .new({

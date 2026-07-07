@@ -85,15 +85,46 @@ return {
       end,
       send_to_sidekick = function(state)
         local node = state.tree:get_node()
-        if node and node.path then
-          require("sidekick.cli").send({ msg = "@" .. node.path, submit = false })
+        if not node or not node.path then
+          return
         end
+        -- Inside herdr, send to the pinned agent pane; else sidekick terminal
+        if vim.env.HERDR_PANE_ID then
+          require("utils.cli_herdr").send_text("@" .. node.path)
+          return
+        end
+        require("sidekick.cli").send({ msg = "@" .. node.path, submit = false })
       end,
       copy_to_notes = function(state)
         local node = state.tree:get_node()
         if node and node.path then
           require("utils.notes").copy_file_to_notes(node.path)
         end
+      end,
+      make_symlink = function(state)
+        local node = state.tree:get_node()
+        if not node or not node.path then
+          return
+        end
+        local source = node.path
+        local parent_dir = vim.fn.fnamemodify(source, ":h")
+        vim.ui.input({
+          prompt = "Symlink destination: ",
+          default = parent_dir .. "/",
+          completion = "file",
+        }, function(dest)
+          if not dest or dest == "" then
+            return
+          end
+          dest = vim.fn.expand(dest)
+          local result = vim.fn.system({ "ln", "-s", source, dest })
+          if vim.v.shell_error ~= 0 then
+            vim.notify("Symlink failed: " .. result, vim.log.levels.ERROR)
+          else
+            vim.notify("Symlink created: " .. dest .. " -> " .. source, vim.log.levels.INFO)
+            require("neo-tree.sources.manager").refresh("filesystem")
+          end
+        end)
       end,
     },
     filesystem = {
@@ -116,6 +147,7 @@ return {
         ["N"] = "copy_to_notes",
         ["S"] = "send_to_sidekick",
         ["E"] = "open_in_explorer",
+        ["L"] = "make_symlink",
       },
     },
   },

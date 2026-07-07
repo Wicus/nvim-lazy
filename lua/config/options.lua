@@ -19,7 +19,7 @@ vim.opt.timeoutlen = 300 -- LazyVim default; 500 felt slow with leader prefixes
 vim.opt.ttimeoutlen = 50
 
 -- Color column
-vim.opt.colorcolumn = "140"
+vim.opt.colorcolumn = "120"
 
 -- Line numbers
 vim.opt.relativenumber = false

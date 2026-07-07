@@ -1,9 +1,10 @@
 local ui = require("utils.ui")
 
-local function sidekick_width() return ui.clamped_width(0.45, 45, 140) end
+local function sidekick_width() return ui.clamped_width(0.5, 45, 140) end
 
 local config = {
   "folke/sidekick.nvim",
+  enabled = false,
   opts = {
     nes = {
       enabled = false, -- Set to false to disable Next Edit Suggestions

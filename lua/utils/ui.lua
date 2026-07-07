@@ -4,7 +4,7 @@ local M = {}
 function M.clamped_width(frac, min, max) return math.max(min, math.min(max, math.floor(vim.o.columns * frac))) end
 
 --- Shared width for left sidebars (Neo-tree, DAP UI): 25% of columns, clamped 20-81.
-function M.sidebar_width() return M.clamped_width(0.25, 20, 81) end
+function M.sidebar_width() return M.clamped_width(0.25, 20, 48) end
 
 --- Keep windows of the given filetype at width_fn() across terminal resizes.
 function M.autoresize_width(ft, width_fn)
